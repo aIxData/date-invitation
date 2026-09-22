@@ -1,13 +1,16 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>One Question For You 💜</title>
+    <title>Our Special Date 💗</title>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap');
+        /* =========================================
+           GENERAL SETTINGS
+        ========================================= */
 
         * {
             margin: 0;
@@ -20,180 +23,190 @@
         }
 
         body {
-            min-height: 100vh;
-            font-family: 'Poppins', sans-serif;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #080b1a;
             color: white;
+            min-height: 100vh;
             overflow-x: hidden;
-
-            background:
-                radial-gradient(circle at 20% 20%, rgba(138, 43, 226, 0.35), transparent 30%),
-                radial-gradient(circle at 80% 30%, rgba(0, 255, 255, 0.25), transparent 30%),
-                radial-gradient(circle at 50% 90%, rgba(255, 0, 153, 0.25), transparent 35%),
-                #050510;
         }
 
-        /* =========================
-           PARTICLE BACKGROUND
-        ========================== */
+        button {
+            font-family: inherit;
+            cursor: pointer;
+        }
 
-        #particles {
+        .hidden {
+            display: none !important;
+        }
+
+        /* =========================================
+           ANIMATED BACKGROUND
+        ========================================= */
+
+        .background {
             position: fixed;
             inset: 0;
             z-index: -3;
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(255, 0, 128, 0.22),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(95, 0, 255, 0.22),
+                    transparent 35%
+                ),
+                #080b1a;
         }
 
-        .grid {
+        .grid-background {
             position: fixed;
             inset: 0;
             z-index: -2;
-
+            opacity: 0.2;
             background-image:
-                linear-gradient(rgba(0,255,255,0.06) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,255,255,0.06) 1px, transparent 1px);
-
-            background-size: 45px 45px;
-
-            transform: perspective(500px) rotateX(60deg) scale(2);
+                linear-gradient(
+                    rgba(255, 255, 255, 0.08) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.08) 1px,
+                    transparent 1px
+                );
+            background-size: 40px 40px;
+            transform: perspective(500px) rotateX(55deg) scale(2);
             transform-origin: center bottom;
-
-            animation: gridMove 12s linear infinite;
         }
 
-        @keyframes gridMove {
-            from {
-                background-position: 0 0;
-            }
-
-            to {
-                background-position: 0 450px;
-            }
-        }
-
-        /* =========================
-           NAVBAR
-        ========================== */
-
-        nav {
+        #particleCanvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px 7%;
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            background: rgba(5, 5, 16, 0.45);
-            backdrop-filter: blur(15px);
-
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-
-            z-index: 100;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
         }
 
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            color: #00ffff;
-            text-shadow: 0 0 15px #00ffff;
-            letter-spacing: 2px;
-        }
+        /* =========================================
+           LANDING PAGE
+        ========================================= */
 
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-
-            font-size: 12px;
-            color: #b9b9d0;
-        }
-
-        .status-dot {
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: #00ff88;
-            box-shadow: 0 0 12px #00ff88;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: .4;
-                transform: scale(.7);
-            }
-        }
-
-        /* =========================
-           MAIN
-        ========================== */
-
-        main {
+        .landing-page {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-
-            padding: 120px 20px 70px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1050px;
             text-align: center;
+            padding: 30px 20px;
+            transition: opacity 0.8s ease;
         }
 
-        .terminal {
-            display: inline-block;
+        .landing-content {
+            max-width: 700px;
+            width: 100%;
+        }
 
+        .system-label {
+            color: #ff7bd5;
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
             margin-bottom: 20px;
-            padding: 8px 15px;
-
-            border: 1px solid rgba(0,255,255,.35);
-            border-radius: 50px;
-
-            background: rgba(0,255,255,.05);
-
-            color: #00ffff;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
-            letter-spacing: 2px;
-
-            box-shadow:
-                0 0 20px rgba(0,255,255,.08);
         }
 
-        /* =========================
-           HEART
-        ========================== */
+        .landing-title {
+            font-size: clamp(28px, 5vw, 56px);
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(
+                90deg,
+                #ff7bd5,
+                #ffffff,
+                #9d8cff
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        .heart-container {
-            width: 100px;
-            height: 100px;
+        .landing-subtitle {
+            color: #b8b8d4;
+            font-size: 16px;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
 
-            margin: 20px auto 30px;
-
+        .heart-wrapper {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            margin: 20px auto 35px;
             display: flex;
             justify-content: center;
             align-items: center;
-
-            position: relative;
         }
 
-        .heart {
-            font-size: 65px;
+        .heart-ring {
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border: 1px solid rgba(255, 83, 177, 0.6);
+            border-radius: 50%;
+            animation: rotateRing 12s linear infinite;
+        }
 
-            filter:
-                drop-shadow(0 0 8px #ff0080)
-                drop-shadow(0 0 20px #ff0080);
+        .heart-ring::before,
+        .heart-ring::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff5cb8;
+            box-shadow: 0 0 20px #ff5cb8;
+        }
 
-            animation: heartbeat 1.3s infinite;
+        .heart-ring::before {
+            top: -5px;
+            left: 50%;
+        }
+
+        .heart-ring::after {
+            bottom: -5px;
+            right: 50%;
+        }
+
+        .heart-button {
+            position: relative;
+            width: 155px;
+            height: 155px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(
+                135deg,
+                #ff3d9a,
+                #a83cff
+            );
+            color: white;
+            font-size: 75px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow:
+                0 0 25px rgba(255, 61, 154, 0.7),
+                0 0 70px rgba(168, 60, 255, 0.4);
+            transition: transform 0.3s ease;
+            animation: heartbeat 2s infinite;
+        }
+
+        .heart-button:hover {
+            transform: scale(1.1);
+        }
+
+        .click-hint {
+            color: #aaa8c8;
+            font-size: 13px;
+            letter-spacing: 1px;
         }
 
         @keyframes heartbeat {
@@ -202,473 +215,606 @@
             }
 
             15% {
-                transform: scale(1.15);
+                transform: scale(1.08);
             }
 
             30% {
                 transform: scale(1);
             }
-
-            45% {
-                transform: scale(1.12);
-            }
         }
 
-        /* =========================
-           TITLE
-        ========================== */
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-
-            font-size: clamp(40px, 7vw, 78px);
-            line-height: 1.1;
-
-            margin-bottom: 20px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #00ffff,
-                    #9d4edd,
-                    #ff0080,
-                    #00ffff
-                );
-
-            background-size: 300%;
-
-            -webkit-background-clip: text;
-            background-clip: text;
-
-            color: transparent;
-
-            animation: gradientText 5s linear infinite;
-        }
-
-        @keyframes gradientText {
+        @keyframes rotateRing {
             from {
-                background-position: 0%;
+                transform: rotate(0deg);
             }
 
             to {
-                background-position: 300%;
+                transform: rotate(360deg);
             }
         }
 
-        .subtitle {
-            max-width: 650px;
-            margin: auto;
+        /* =========================================
+           INVITATION PAGE
+        ========================================= */
 
-            color: #c8c8d8;
-
-            font-size: 16px;
-            line-height: 1.8;
+        .invitation-page {
+            min-height: 100vh;
+            padding: 35px 20px 70px;
+            animation: fadeIn 0.8s ease;
         }
 
-        /* =========================
-           GLASS CARD
-        ========================== */
-
-        .card {
-            margin: 45px auto 0;
-
-            max-width: 800px;
-
-            padding: 40px;
-
-            border-radius: 28px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255,255,255,.09),
-                    rgba(255,255,255,.025)
-                );
-
-            border: 1px solid rgba(255,255,255,.12);
-
-            backdrop-filter: blur(25px);
-
-            box-shadow:
-                0 30px 100px rgba(0,0,0,.5),
-                inset 0 1px rgba(255,255,255,.1);
-
-            position: relative;
-            overflow: hidden;
+        .navigation {
+            max-width: 1100px;
+            margin: 0 auto 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
         }
 
-        .card::before {
-            content: "";
-
-            position: absolute;
-
-            width: 300px;
-            height: 300px;
-
-            background: #ff0080;
-
-            filter: blur(150px);
-
-            opacity: .12;
-
-            top: -150px;
-            right: -150px;
-        }
-
-        .card-label {
-            font-family: 'Orbitron', sans-serif;
-
-            color: #00ffff;
-
-            font-size: 11px;
+        .logo {
+            color: #ff70c7;
+            font-size: 14px;
+            font-weight: bold;
             letter-spacing: 2px;
-
-            margin-bottom: 25px;
         }
 
-        .message {
+        .nav-status {
+            font-size: 12px;
+            color: #a8a6c4;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 14px;
+            border-radius: 30px;
+        }
+
+        .invitation-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .terminal-label {
+            color: #78f7c7;
+            font-family: monospace;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .invitation-title {
+            font-size: clamp(35px, 6vw, 70px);
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(
+                90deg,
+                #ffffff,
+                #ff8bd8,
+                #a18aff
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .invitation-intro {
+            color: #c4c3da;
+            line-height: 1.8;
+            max-width: 650px;
+            margin: 0 auto 35px;
+        }
+
+        .invitation-card {
+            background: rgba(20, 23, 48, 0.8);
+            border: 1px solid rgba(255, 123, 213, 0.25);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow:
+                0 0 40px rgba(113, 44, 157, 0.15),
+                inset 0 0 30px rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px);
+        }
+
+        .card-heading {
+            color: #ff7bd5;
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .romantic-message {
+            color: #f3eaf8;
             font-size: 18px;
             line-height: 1.9;
-
-            color: #eee;
-
             margin-bottom: 30px;
         }
-
-        .message strong {
-            color: #ff54b5;
-            text-shadow: 0 0 10px rgba(255,0,128,.5);
-        }
-
-        /* =========================
-           DATE INFO
-        ========================== */
 
         .details {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-
             gap: 15px;
-
-            margin: 30px 0;
+            margin-bottom: 30px;
         }
 
-        .detail {
-            padding: 20px 12px;
-
-            border-radius: 18px;
-
-            background: rgba(255,255,255,.04);
-
-            border: 1px solid rgba(255,255,255,.08);
-
-            transition: .3s;
-        }
-
-        .detail:hover {
-            transform: translateY(-5px);
-
-            border-color: #00ffff;
-
-            box-shadow: 0 0 25px rgba(0,255,255,.1);
+        .detail-box {
+            padding: 20px 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
         }
 
         .detail-icon {
-            font-size: 25px;
-            margin-bottom: 8px;
+            font-size: 24px;
+            margin-bottom: 10px;
         }
 
         .detail-label {
-            font-size: 10px;
-            color: #8888a0;
+            color: #9f9dbb;
+            font-size: 11px;
             letter-spacing: 1px;
             text-transform: uppercase;
+            margin-bottom: 7px;
         }
 
         .detail-value {
-            margin-top: 5px;
-
-            font-family: 'Orbitron', sans-serif;
-
-            font-size: 13px;
             color: white;
+            font-size: 14px;
+            font-weight: 600;
         }
 
-        /* =========================
+        /* =========================================
            COUNTDOWN
-        ========================== */
+        ========================================= */
 
         .countdown-title {
-            font-size: 12px;
-            color: #8888a0;
-
+            color: #ffb5e5;
+            font-size: 13px;
             letter-spacing: 2px;
-
-            margin-top: 30px;
             margin-bottom: 15px;
         }
 
         .countdown {
             display: flex;
             justify-content: center;
-
             gap: 12px;
+            margin-bottom: 35px;
         }
 
-        .time-box {
-            min-width: 75px;
-
-            padding: 12px;
-
+        .countdown-box {
+            min-width: 65px;
+            padding: 13px 8px;
             border-radius: 12px;
-
-            background: rgba(0,0,0,.3);
-
-            border: 1px solid rgba(0,255,255,.15);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 123, 213, 0.2);
         }
 
-        .time-number {
-            font-family: 'Orbitron', sans-serif;
-
-            font-size: 23px;
-
-            color: #00ffff;
-
-            text-shadow: 0 0 10px rgba(0,255,255,.5);
+        .countdown-number {
+            display: block;
+            font-size: 25px;
+            font-weight: bold;
+            color: #ffffff;
         }
 
-        .time-label {
-            font-size: 8px;
-            color: #77778e;
+        .countdown-label {
+            display: block;
+            color: #a8a6c4;
+            font-size: 10px;
+            margin-top: 5px;
         }
 
-        /* =========================
-           BUTTONS
-        ========================== */
+        /* =========================================
+           PREFERENCE SECTION
+        ========================================= */
 
-        .buttons {
+        .preference-section {
             margin-top: 35px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
+        }
 
+        .preference-title {
+            text-align: center;
+            font-size: 23px;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .preference-subtitle {
+            text-align: center;
+            color: #aaa8c8;
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+        .preference-group {
+            margin-bottom: 30px;
+        }
+
+        .preference-group-title {
+            color: #ff9bdc;
+            font-size: 14px;
+            margin-bottom: 14px;
+            font-weight: 600;
+        }
+
+        .shirt-options,
+        .activity-options,
+        .food-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .shirt-option,
+        .activity-option,
+        .food-option {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.04);
+            color: #e8e6f5;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 13px;
+            transition: all 0.25s ease;
+        }
+
+        .shirt-option {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .shirt-option:hover,
+        .activity-option:hover,
+        .food-option:hover {
+            border-color: #ff70c7;
+            background: rgba(255, 112, 199, 0.12);
+        }
+
+        .shirt-option.selected,
+        .activity-option.selected,
+        .food-option.selected {
+            border-color: #ff70c7;
+            background: rgba(255, 112, 199, 0.2);
+            box-shadow: 0 0 15px rgba(255, 112, 199, 0.15);
+        }
+
+        .color-circle {
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            display: inline-block;
+        }
+
+        .selection-display {
+            margin-top: 15px;
+            color: #aaa8c8;
+            font-size: 12px;
+        }
+
+        .selection-display span {
+            color: #78f7c7;
+            font-weight: bold;
+        }
+
+        .food-recommendation {
+            margin-top: 15px;
+            padding: 15px;
+            border-left: 3px solid #ff70c7;
+            background: rgba(255, 112, 199, 0.07);
+            color: #d5d2e8;
+            font-size: 13px;
+            line-height: 1.7;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .generate-plan-btn {
+            width: 100%;
+            border: none;
+            padding: 17px;
+            border-radius: 15px;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            background: linear-gradient(
+                90deg,
+                #ff3d9a,
+                #8d4dff
+            );
+            box-shadow: 0 0 25px rgba(255, 61, 154, 0.2);
+            transition: transform 0.25s ease;
+            margin-top: 10px;
+        }
+
+        .generate-plan-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .date-plan {
+            display: none;
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 18px;
+            border: 1px solid rgba(120, 247, 199, 0.4);
+            background: rgba(120, 247, 199, 0.07);
+            text-align: left;
+        }
+
+        .date-plan.show {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .date-plan h3 {
+            color: #78f7c7;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .date-plan p {
+            color: #d9d7e8;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        /* =========================================
+           ACTION BUTTONS
+        ========================================= */
+
+        .action-area {
+            margin-top: 35px;
+        }
+
+        .action-question {
+            color: #ddd9ee;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .action-buttons {
             display: flex;
             justify-content: center;
             gap: 15px;
-
-            position: relative;
-            min-height: 65px;
+            flex-wrap: wrap;
         }
 
-        button {
+        .yes-button,
+        .maybe-button {
+            min-width: 150px;
+            border-radius: 30px;
+            padding: 15px 25px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.25s ease;
+        }
+
+        .yes-button {
+            color: white;
             border: none;
-            cursor: pointer;
-
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-
-            transition: .3s;
+            background: linear-gradient(
+                90deg,
+                #ff3d9a,
+                #a83cff
+            );
+            box-shadow: 0 0 25px rgba(255, 61, 154, 0.3);
         }
 
-        .yes-btn {
-            padding: 17px 30px;
-
-            border-radius: 14px;
-
-            color: #050510;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #00ffff,
-                    #9d4edd,
-                    #ff0080
-                );
-
-            box-shadow:
-                0 0 25px rgba(0,255,255,.25),
-                0 0 45px rgba(255,0,128,.15);
+        .maybe-button {
+            color: #e9e5f6;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.04);
         }
 
-        .yes-btn:hover {
-            transform: translateY(-4px) scale(1.03);
-
-            box-shadow:
-                0 0 35px rgba(0,255,255,.4),
-                0 0 60px rgba(255,0,128,.25);
+        .yes-button:hover,
+        .maybe-button:hover {
+            transform: translateY(-3px);
         }
 
-        .no-btn {
-            padding: 17px 30px;
+        /* =========================================
+           SUCCESS OVERLAY
+        ========================================= */
 
-            border-radius: 14px;
-
-            color: #aaa;
-
-            background: rgba(255,255,255,.05);
-
-            border: 1px solid rgba(255,255,255,.1);
-
-            position: relative;
-        }
-
-        /* =========================
-           ACCEPTED SCREEN
-        ========================== */
-
-        #success {
-            display: none;
-
+        .success-page {
             position: fixed;
             inset: 0;
-
-            z-index: 500;
-
+            z-index: 20;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 25px;
             background:
                 radial-gradient(
                     circle,
-                    rgba(80,0,120,.9),
-                    rgba(2,2,10,.98)
+                    rgba(124, 35, 128, 0.95),
+                    rgba(8, 11, 26, 0.98)
                 );
+        }
 
-            justify-content: center;
-            align-items: center;
-
-            padding: 20px;
-
-            text-align: center;
+        .success-page.show {
+            display: flex;
+            animation: fadeIn 0.7s ease;
         }
 
         .success-content {
-            max-width: 700px;
+            max-width: 600px;
         }
 
         .success-heart {
             font-size: 100px;
-
-            animation: heartbeat 1s infinite;
-
-            filter:
-                drop-shadow(0 0 20px #ff0080);
+            animation: heartbeat 1.5s infinite;
+            margin-bottom: 25px;
         }
 
         .success-title {
-            font-family: 'Orbitron', sans-serif;
-
-            font-size: clamp(35px, 7vw, 70px);
-
-            margin: 20px 0;
-
-            color: #00ffff;
-
-            text-shadow:
-                0 0 15px #00ffff,
-                0 0 40px #9d4edd;
+            font-size: clamp(35px, 6vw, 65px);
+            margin-bottom: 20px;
+            background: linear-gradient(
+                90deg,
+                #ff8bd8,
+                #ffffff,
+                #a18aff
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .success-text {
-            color: #ddd;
-
-            line-height: 1.8;
-
-            font-size: 17px;
+        .success-message {
+            color: #ddd9ee;
+            line-height: 1.9;
+            margin-bottom: 30px;
         }
 
-        .whatsapp-btn {
+        .whatsapp-button,
+        .back-button {
             display: inline-block;
-
-            margin-top: 30px;
-
-            padding: 15px 25px;
-
-            border-radius: 12px;
-
             text-decoration: none;
-
-            color: white;
-
-            background: #25D366;
-
-            box-shadow: 0 0 25px rgba(37,211,102,.25);
-
-            font-weight: 600;
+            border-radius: 30px;
+            padding: 14px 24px;
+            margin: 5px;
+            font-size: 13px;
+            font-weight: bold;
         }
 
-        /* =========================
+        .whatsapp-button {
+            background: #25d366;
+            color: white;
+        }
+
+        .back-button {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: transparent;
+            color: white;
+        }
+
+        /* =========================================
            FLOATING HEARTS
-        ========================== */
+        ========================================= */
 
         .floating-heart {
             position: fixed;
-
-            bottom: -50px;
-
             pointer-events: none;
-
-            animation: floatUp linear forwards;
-
-            z-index: 600;
+            z-index: 30;
+            font-size: 20px;
+            animation: floatUp 3s ease-out forwards;
         }
 
         @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-250px) scale(1.5);
+            }
+        }
+
+        @keyframes fadeIn {
             from {
-                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-100px) rotate(0deg);
                 opacity: 1;
             }
 
             to {
-                transform:
-                    translateY(-110vh)
-                    rotate(360deg);
-
+                transform: translateY(100vh) rotate(360deg);
                 opacity: 0;
             }
         }
 
-        /* =========================
-           RESPONSIVE
-        ========================== */
+        /* =========================================
+           RESPONSIVE DESIGN
+        ========================================= */
 
         @media (max-width: 700px) {
-
-            nav {
-                padding: 16px 5%;
-            }
-
-            .logo {
-                font-size: 12px;
-            }
-
-            .status {
-                font-size: 9px;
-            }
-
-            main {
-                padding-top: 100px;
-            }
-
-            .card {
-                padding: 25px 18px;
-                border-radius: 22px;
+            .invitation-card {
+                padding: 22px 17px;
             }
 
             .details {
                 grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .detail-box {
+                padding: 15px;
             }
 
             .countdown {
-                flex-wrap: wrap;
+                gap: 6px;
             }
 
-            .time-box {
-                min-width: 65px;
+            .countdown-box {
+                min-width: 55px;
+                padding: 10px 5px;
             }
 
-            .buttons {
+            .countdown-number {
+                font-size: 21px;
+            }
+
+            .countdown-label {
+                font-size: 9px;
+            }
+
+            .heart-wrapper {
+                width: 210px;
+                height: 210px;
+            }
+
+            .heart-ring {
+                width: 200px;
+                height: 200px;
+            }
+
+            .heart-button {
+                width: 135px;
+                height: 135px;
+                font-size: 65px;
+            }
+
+            .navigation {
+                margin-bottom: 40px;
+            }
+
+            .nav-status {
+                font-size: 10px;
+                padding: 7px 10px;
+            }
+
+            .shirt-options,
+            .activity-options,
+            .food-options {
+                gap: 8px;
+            }
+
+            .shirt-option,
+            .activity-option,
+            .food-option {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+
+            .action-buttons {
                 flex-direction: column;
-                align-items: center;
             }
 
-            .yes-btn,
-            .no-btn {
-                width: 90%;
+            .yes-button,
+            .maybe-button {
+                width: 100%;
             }
         }
     </style>
@@ -676,89 +822,140 @@
 
 <body>
 
-    <!-- PARTICLES -->
-    <canvas id="particles"></canvas>
+    <!-- BACKGROUND -->
+    <div class="background"></div>
+    <div class="grid-background"></div>
+    <canvas id="particleCanvas"></canvas>
 
-    <!-- CYBER GRID -->
-    <div class="grid"></div>
+    <!-- =========================================
+         LANDING PAGE
+    ========================================= -->
 
-    <!-- NAVIGATION -->
-    <nav>
-        <div class="logo">DATE_Invitation.exe</div>
+    <section class="landing-page" id="landingPage">
 
-        <div class="status">
-            <span class="status-dot"></span>
-            CONNECTION: ACTIVE
-        </div>
-    </nav>
+        <div class="landing-content">
 
-    <!-- MAIN CONTENT -->
-    <main>
-
-        <div class="container">
-
-            <div class="terminal">
-                // INCOMING MESSAGE FROM SOMEONE SPECIAL
+            <div class="system-label">
+                CONNECTION ESTABLISHED 💗
             </div>
 
-            <div class="heart-container">
-                <div class="heart">💗</div>
-            </div>
-
-            <h1>
-                Hey, You.
+            <h1 class="landing-title">
+                A Little Surprise For You
             </h1>
 
-            <p class="subtitle">
-                I have a very important question that requires
-                your immediate attention...
+            <p class="landing-subtitle">
+                There is something special waiting for you.
+                <br>
+                Click the heart to open your invitation.
             </p>
 
-            <div class="card">
+            <div class="heart-wrapper">
 
-                <div class="card-label">
-                    ◆ AFIQ_MESSAGE
+                <div class="heart-ring"></div>
+
+                <button
+                    class="heart-button"
+                    id="heartButton"
+                    type="button"
+                    aria-label="Open invitation"
+                >
+                    💗
+                </button>
+
+            </div>
+
+            <p class="click-hint">
+                [ CLICK THE HEART TO CONTINUE ]
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         INVITATION PAGE
+    ========================================= -->
+
+    <section
+        class="invitation-page hidden"
+        id="invitationPage"
+    >
+
+        <nav class="navigation">
+
+            <div class="logo">
+                DATE_INVITATION.exe
+            </div>
+
+            <div class="nav-status">
+                ● CONNECTION ACTIVE
+            </div>
+
+        </nav>
+
+
+        <div class="invitation-container">
+
+            <div class="terminal-label">
+                &gt; NEW MESSAGE RECEIVED...
+            </div>
+
+            <h1 class="invitation-title">
+                Will You Go On<br>
+                A Date With Me?
+            </h1>
+
+            <p class="invitation-intro">
+                I wanted to create something a little different
+                to ask someone special to spend some quality time
+                together. So, here is a small digital invitation
+                made especially for you. 💗
+            </p>
+
+
+            <div class="invitation-card">
+
+                <div class="card-heading">
+                    PERSONAL INVITATION
                 </div>
 
-                <p class="message">
-                    After extensive research, countless calculations,
-                    and a highly sophisticated algorithm...
-
+                <p class="romantic-message">
+                    Every moment is better when shared with someone
+                    special. I would love to spend time with you,
+                    create beautiful memories, and enjoy a day
+                    filled with laughter, good food, and happiness.
                     <br><br>
-
-                    I've reached one very important conclusion:
-
-                    <br><br>
-
-                    <strong>
-                        I really want to take you on a date. ❤️
-                    </strong>
-
-                    <br><br>
-
-                    So, what do you say?
-                    Just you, me, good food, good vibes,
-                    and hopefully a few memories worth keeping.
+                    So, what do you say? Will you be my date? 💕
                 </p>
+
 
                 <!-- DATE DETAILS -->
 
                 <div class="details">
 
-                    <div class="detail">
-                        <div class="detail-icon">📅</div>
+                    <div class="detail-box">
+
+                        <div class="detail-icon">
+                            📅
+                        </div>
 
                         <div class="detail-label">
                             Date
                         </div>
 
                         <div class="detail-value">
-                            26 SEPT 2026
+                            26 September 2026
                         </div>
+
                     </div>
 
-                    <div class="detail">
-                        <div class="detail-icon">🕗</div>
+
+                    <div class="detail-box">
+
+                        <div class="detail-icon">
+                            ⏰
+                        </div>
 
                         <div class="detail-label">
                             Time
@@ -767,190 +964,628 @@
                         <div class="detail-value">
                             8:00 PM
                         </div>
+
                     </div>
 
-                    <div class="detail">
-                        <div class="detail-icon">📍</div>
+
+                    <div class="detail-box">
+
+                        <div class="detail-icon">
+                            📍
+                        </div>
 
                         <div class="detail-label">
                             Location
                         </div>
 
                         <div class="detail-value">
-                            JOKOPI
+                            To Be Decided Together
                         </div>
+
                     </div>
 
                 </div>
+
 
                 <!-- COUNTDOWN -->
 
                 <div class="countdown-title">
-                    COUNTDOWN UNTIL OUR POTENTIAL DATE
+                    TIME UNTIL OUR SPECIAL MOMENT
                 </div>
 
                 <div class="countdown">
 
-                    <div class="time-box">
-                        <div id="days" class="time-number">00</div>
-                        <div class="time-label">DAYS</div>
+                    <div class="countdown-box">
+                        <span
+                            class="countdown-number"
+                            id="days"
+                        >
+                            00
+                        </span>
+
+                        <span class="countdown-label">
+                            DAYS
+                        </span>
                     </div>
 
-                    <div class="time-box">
-                        <div id="hours" class="time-number">00</div>
-                        <div class="time-label">HOURS</div>
+
+                    <div class="countdown-box">
+                        <span
+                            class="countdown-number"
+                            id="hours"
+                        >
+                            00
+                        </span>
+
+                        <span class="countdown-label">
+                            HOURS
+                        </span>
                     </div>
 
-                    <div class="time-box">
-                        <div id="minutes" class="time-number">00</div>
-                        <div class="time-label">MINUTES</div>
+
+                    <div class="countdown-box">
+                        <span
+                            class="countdown-number"
+                            id="minutes"
+                        >
+                            00
+                        </span>
+
+                        <span class="countdown-label">
+                            MINUTES
+                        </span>
                     </div>
 
-                    <div class="time-box">
-                        <div id="seconds" class="time-number">00</div>
-                        <div class="time-label">SECONDS</div>
+
+                    <div class="countdown-box">
+                        <span
+                            class="countdown-number"
+                            id="seconds"
+                        >
+                            00
+                        </span>
+
+                        <span class="countdown-label">
+                            SECONDS
+                        </span>
                     </div>
 
                 </div>
 
-                <!-- BUTTONS -->
 
-                <div class="buttons">
+                <!-- =========================================
+                     DATE PREFERENCES
+                ========================================= -->
+
+                <div class="preference-section">
+
+                    <h2 class="preference-title">
+                        Let's Plan Our Date 💕
+                    </h2>
+
+                    <p class="preference-subtitle">
+                        Choose your preferences so we can create
+                        a date plan together.
+                    </p>
+
+
+                    <!-- SHIRT COLOR -->
+
+                    <div class="preference-group">
+
+                        <div class="preference-group-title">
+                            👕 What colour shirt would you like to wear?
+                        </div>
+
+                        <div class="shirt-options">
+
+                            <button
+                                type="button"
+                                class="shirt-option"
+                                data-color="Pink"
+                            >
+                                <span
+                                    class="color-circle"
+                                    style="background: #ff8acb;"
+                                ></span>
+
+                                Pink
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="shirt-option"
+                                data-color="Black"
+                            >
+                                <span
+                                    class="color-circle"
+                                    style="background: #111111;"
+                                ></span>
+
+                                Black
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="shirt-option"
+                                data-color="White"
+                            >
+                                <span
+                                    class="color-circle"
+                                    style="background: #ffffff;"
+                                ></span>
+
+                                White
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="shirt-option"
+                                data-color="Blue"
+                            >
+                                <span
+                                    class="color-circle"
+                                    style="background: #468cff;"
+                                ></span>
+
+                                Blue
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="shirt-option"
+                                data-color="Purple"
+                            >
+                                <span
+                                    class="color-circle"
+                                    style="background: #9b59ff;"
+                                ></span>
+
+                                Purple
+                            </button>
+
+                        </div>
+
+                        <div class="selection-display">
+                            Selected shirt colour:
+                            <span id="selectedShirt">
+                                Not selected
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIVITY -->
+
+                    <div class="preference-group">
+
+                        <div class="preference-group-title">
+                            🎯 What would you be interested in doing?
+                        </div>
+
+                        <div class="activity-options">
+
+                            <button
+                                type="button"
+                                class="activity-option"
+                                data-activity="Cafe Date"
+                            >
+                                ☕ Cafe Date
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="activity-option"
+                                data-activity="Movie"
+                            >
+                                🎬 Movie
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="activity-option"
+                                data-activity="Picnic"
+                            >
+                                🧺 Picnic
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="activity-option"
+                                data-activity="Shopping"
+                            >
+                                🛍️ Shopping
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="activity-option"
+                                data-activity="Romantic Dinner"
+                            >
+                                🍽️ Romantic Dinner
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="activity-option"
+                                data-activity="Adventure"
+                            >
+                                🌟 Adventure
+                            </button>
+
+                        </div>
+
+                        <div class="selection-display">
+                            Selected activity:
+                            <span id="selectedActivity">
+                                Not selected
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <!-- FOOD -->
+
+                    <div class="preference-group">
+
+                        <div class="preference-group-title">
+                            🍱 What kind of food would you like?
+                        </div>
+
+                        <div class="food-options">
+
+                            <button
+                                type="button"
+                                class="food-option"
+                                data-food="Western"
+                            >
+                                🍝 Western
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="food-option"
+                                data-food="Japanese"
+                            >
+                                🍣 Japanese
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="food-option"
+                                data-food="Korean"
+                            >
+                                🍗 Korean
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="food-option"
+                                data-food="Malaysian"
+                            >
+                                🍛 Malaysian
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="food-option"
+                                data-food="Dessert"
+                            >
+                                🍰 Dessert
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="food-option"
+                                data-food="Surprise Me"
+                            >
+                                🎁 Surprise Me
+                            </button>
+
+                        </div>
+
+                        <div class="selection-display">
+                            Selected food:
+                            <span id="selectedFood">
+                                Not selected
+                            </span>
+                        </div>
+
+                        <div
+                            class="food-recommendation"
+                            id="foodRecommendation"
+                        >
+                            Choose a food preference to see
+                            a recommendation.
+                        </div>
+
+                    </div>
+
+
+                    <!-- GENERATE DATE PLAN -->
 
                     <button
-                        class="yes-btn"
-                        onclick="acceptDate()"
+                        type="button"
+                        class="generate-plan-btn"
+                        id="generatePlan"
                     >
-                        💖 YES, LET'S GO!
+                        ✨ GENERATE OUR DATE PLAN
                     </button>
 
-                    <button
-                        class="no-btn"
-                        id="noButton"
+
+                    <div
+                        class="date-plan"
+                        id="datePlan"
                     >
-                        Maybe... 😏
-                    </button>
+
+                        <h3>
+                            💗 Your Personalised Date Plan
+                        </h3>
+
+                        <p id="planText"></p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- YES / MAYBE -->
+
+                <div class="action-area">
+
+                    <p class="action-question">
+                        So... what do you say? 💕
+                    </p>
+
+                    <div class="action-buttons">
+
+                        <button
+                            type="button"
+                            class="yes-button"
+                            id="yesButton"
+                        >
+                            YES, I'D LOVE TO 💗
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="maybe-button"
+                            id="maybeButton"
+                        >
+                            LET ME THINK 😳
+                        </button>
+
+                    </div>
 
                 </div>
 
             </div>
-
-        </div>
-
-    </main>
-
-
-    <!-- SUCCESS SCREEN -->
-
-    <section id="success">
-
-        <div class="success-content">
-
-            <div class="success-heart">
-                💖
-            </div>
-
-            <div class="success-title">
-                DATE ACCEPTED
-            </div>
-
-            <p class="success-text">
-
-                Excellent decision. 😌
-
-                <br><br>
-
-                The Date has officially been activated.
-
-                <br>
-
-                Prepare yourself for good food,
-                questionable jokes and hopefully
-                a really good time.
-
-                <br><br>
-
-                I'll see you there. ❤️
-
-            </p>
-
-            <!-- CHANGE THE NUMBER BELOW -->
-
-            <a
-                class="whatsapp-btn"
-                href="https://wa.me/60189501257?text=YES!%20I%27m%20in%20for%20the%20date%20%F0%9F%92%96"
-                target="_blank"
-            >
-                💬 Confirm via WhatsApp
-            </a>
 
         </div>
 
     </section>
 
 
+    <!-- =========================================
+         SUCCESS PAGE
+    ========================================= -->
+
+    <section
+        class="success-page"
+        id="successPage"
+    >
+
+        <div class="success-content">
+
+            <div class="success-heart">
+                💗
+            </div>
+
+            <h1 class="success-title">
+                It's A Date!
+            </h1>
+
+            <p class="success-message">
+                You just made me really happy. 🥹💕
+                <br><br>
+                I cannot wait to spend this special time
+                with you. Let's make some beautiful memories
+                together!
+            </p>
+
+
+            <!-- Change the phone number below -->
+            <!-- Use international format without + or spaces -->
+
+            <a
+                class="whatsapp-button"
+                href="https://wa.me/60189501257?text=Yes%20%2C%20it's%20a%20date!%20%F0%9F%92%97"
+                target="_blank"
+            >
+                💬 SEND YES ON WHATSAPP
+            </a>
+
+
+            <button
+                type="button"
+                class="back-button"
+                id="backButton"
+            >
+                GO BACK
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================= -->
+
     <script>
 
         /* =========================================
-           COUNTDOWN
-        ========================================== */
+           PAGE NAVIGATION
+        ========================================= */
 
-        // CHANGE THIS DATE
-        const targetDate =
-            new Date("September 26, 2026 20:00:00").getTime();
+        const landingPage = document.getElementById("landingPage");
+        const invitationPage = document.getElementById("invitationPage");
+        const heartButton = document.getElementById("heartButton");
+
+        const successPage = document.getElementById("successPage");
+        const yesButton = document.getElementById("yesButton");
+        const backButton = document.getElementById("backButton");
+        const maybeButton = document.getElementById("maybeButton");
+
+
+        heartButton.addEventListener("click", function () {
+
+            landingPage.style.display = "none";
+            invitationPage.classList.remove("hidden");
+
+            createHeartBurst();
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        });
+
+
+        yesButton.addEventListener("click", function () {
+
+            successPage.classList.add("show");
+
+            createHeartBurst();
+            createConfetti();
+
+        });
+
+
+        backButton.addEventListener("click", function () {
+
+            successPage.classList.remove("show");
+
+        });
+
+
+        /* =========================================
+           MAYBE BUTTON
+        ========================================= */
+
+        let maybeClickCount = 0;
+
+        const maybeMessages = [
+            "Are you sure? 🥺",
+            "Think about the food! 🍰",
+            "I promise it will be fun! 💗",
+            "You can choose the activity! 😳",
+            "One little date? 🥹",
+            "Please say yes! 💕"
+        ];
+
+
+        maybeButton.addEventListener("click", function () {
+
+            const message =
+                maybeMessages[
+                    maybeClickCount % maybeMessages.length
+                ];
+
+            maybeButton.textContent = message;
+
+            maybeClickCount++;
+
+            if (maybeClickCount >= 3) {
+
+                maybeButton.style.transform =
+                    "translate(" +
+                    (Math.random() * 40 - 20) +
+                    "px, " +
+                    (Math.random() * 30 - 15) +
+                    "px)";
+
+            }
+
+        });
+
+
+        /* =========================================
+           COUNTDOWN TIMER
+        ========================================= */
+
+        const targetDate = new Date(
+            "September 26, 2026 20:00:00"
+        ).getTime();
 
 
         function updateCountdown() {
 
-            const now = new Date().getTime();
+            const currentTime = new Date().getTime();
 
-            const distance = targetDate - now;
+            const difference = targetDate - currentTime;
 
 
-            if (distance <= 0) {
+            if (difference <= 0) {
 
-                document.getElementById("days").innerText = "00";
-                document.getElementById("hours").innerText = "00";
-                document.getElementById("minutes").innerText = "00";
-                document.getElementById("seconds").innerText = "00";
+                document.getElementById("days").textContent = "00";
+                document.getElementById("hours").textContent = "00";
+                document.getElementById("minutes").textContent = "00";
+                document.getElementById("seconds").textContent = "00";
 
                 return;
+
             }
 
 
-            const days =
-                Math.floor(distance / (1000 * 60 * 60 * 24));
+            const days = Math.floor(
+                difference / (1000 * 60 * 60 * 24)
+            );
 
-            const hours =
-                Math.floor(
-                    (distance % (1000 * 60 * 60 * 24))
-                    / (1000 * 60 * 60)
-                );
+            const hours = Math.floor(
+                (difference / (1000 * 60 * 60)) % 24
+            );
 
-            const minutes =
-                Math.floor(
-                    (distance % (1000 * 60 * 60))
-                    / (1000 * 60)
-                );
+            const minutes = Math.floor(
+                (difference / (1000 * 60)) % 60
+            );
 
-            const seconds =
-                Math.floor(
-                    (distance % (1000 * 60))
-                    / 1000
-                );
+            const seconds = Math.floor(
+                (difference / 1000) % 60
+            );
 
 
-            document.getElementById("days").innerText =
+            document.getElementById("days").textContent =
                 String(days).padStart(2, "0");
 
-            document.getElementById("hours").innerText =
+            document.getElementById("hours").textContent =
                 String(hours).padStart(2, "0");
 
-            document.getElementById("minutes").innerText =
+            document.getElementById("minutes").textContent =
                 String(minutes).padStart(2, "0");
 
-            document.getElementById("seconds").innerText =
+            document.getElementById("seconds").textContent =
                 String(seconds).padStart(2, "0");
+
         }
 
 
@@ -960,116 +1595,263 @@
 
 
         /* =========================================
-           YES BUTTON
-        ========================================== */
+           DATE PREFERENCES
+        ========================================= */
 
-        function acceptDate() {
+        let selectedShirt = "";
+        let selectedActivity = "";
+        let selectedFood = "";
 
-            document.getElementById("success").style.display = "flex";
 
-            createConfetti();
+        const shirtOptions =
+            document.querySelectorAll(".shirt-option");
 
-            createFloatingHearts();
+        const activityOptions =
+            document.querySelectorAll(".activity-option");
 
-        }
+        const foodOptions =
+            document.querySelectorAll(".food-option");
+
+
+        const selectedShirtText =
+            document.getElementById("selectedShirt");
+
+        const selectedActivityText =
+            document.getElementById("selectedActivity");
+
+        const selectedFoodText =
+            document.getElementById("selectedFood");
+
+        const foodRecommendation =
+            document.getElementById("foodRecommendation");
+
+
+        /* SHIRT SELECTION */
+
+        shirtOptions.forEach(function (option) {
+
+            option.addEventListener("click", function () {
+
+                shirtOptions.forEach(function (item) {
+                    item.classList.remove("selected");
+                });
+
+                option.classList.add("selected");
+
+                selectedShirt =
+                    option.getAttribute("data-color");
+
+                selectedShirtText.textContent =
+                    selectedShirt;
+
+            });
+
+        });
+
+
+        /* ACTIVITY SELECTION */
+
+        activityOptions.forEach(function (option) {
+
+            option.addEventListener("click", function () {
+
+                activityOptions.forEach(function (item) {
+                    item.classList.remove("selected");
+                });
+
+                option.classList.add("selected");
+
+                selectedActivity =
+                    option.getAttribute("data-activity");
+
+                selectedActivityText.textContent =
+                    selectedActivity;
+
+            });
+
+        });
+
+
+        /* FOOD SELECTION */
+
+        const foodRecommendations = {
+
+            "Western":
+                "How about pasta, pizza, burgers, or a cosy Western restaurant? 🍝",
+
+            "Japanese":
+                "We could enjoy sushi, ramen, donburi, or a Japanese BBQ meal. 🍣",
+
+            "Korean":
+                "Korean fried chicken, tteokbokki, Korean BBQ, or ramyeon sounds delicious! 🍗",
+
+            "Malaysian":
+                "We can enjoy nasi lemak, satay, ayam penyet, or other Malaysian favourites. 🍛",
+
+            "Dessert":
+                "Let's have cakes, waffles, ice cream, or a cute dessert date. 🍰",
+
+            "Surprise Me":
+                "Let me choose something special based on your mood. It will be a surprise! 🎁"
+
+        };
+
+
+        foodOptions.forEach(function (option) {
+
+            option.addEventListener("click", function () {
+
+                foodOptions.forEach(function (item) {
+                    item.classList.remove("selected");
+                });
+
+                option.classList.add("selected");
+
+                selectedFood =
+                    option.getAttribute("data-food");
+
+                selectedFoodText.textContent =
+                    selectedFood;
+
+                foodRecommendation.textContent =
+                    foodRecommendations[selectedFood];
+
+            });
+
+        });
 
 
         /* =========================================
-           PLAYFUL NO / MAYBE BUTTON
-        ========================================== */
+           GENERATE PERSONAL DATE PLAN
+        ========================================= */
 
-        const noButton =
-            document.getElementById("noButton");
+        const generatePlanButton =
+            document.getElementById("generatePlan");
 
+        const datePlan =
+            document.getElementById("datePlan");
 
-        noButton.addEventListener("mouseover", moveButton);
-
-        noButton.addEventListener("touchstart", moveButton);
-
-
-        function moveButton() {
-
-            const maxX = window.innerWidth - 180;
-            const maxY = window.innerHeight - 120;
-
-            const x =
-                Math.random() * maxX - maxX / 2;
-
-            const y =
-                Math.random() * maxY - maxY / 2;
+        const planText =
+            document.getElementById("planText");
 
 
-            noButton.style.position = "fixed";
+        const activityRecommendations = {
 
-            noButton.style.left = "50%";
-            noButton.style.top = "50%";
+            "Cafe Date":
+                "We can find a cosy cafe, talk about our day, enjoy drinks, and take some cute pictures together. ☕",
 
-            noButton.style.transform =
-                `translate(${x}px, ${y}px)`;
+            "Movie":
+                "We can choose a movie, get some snacks, and enjoy a relaxing movie night together. 🎬",
 
-        }
+            "Picnic":
+                "We can prepare some snacks, find a peaceful spot, enjoy the scenery, and spend quality time together. 🧺",
+
+            "Shopping":
+                "We can walk around, explore shops, choose something nice, and enjoy food along the way. 🛍️",
+
+            "Romantic Dinner":
+                "We can dress nicely, enjoy a delicious dinner, talk about life, and create a memorable evening. 🍽️",
+
+            "Adventure":
+                "We can explore somewhere new, try an interesting activity, take pictures, and make new memories. 🌟"
+
+        };
+
+
+        generatePlanButton.addEventListener("click", function () {
+
+            if (
+                selectedShirt === "" ||
+                selectedActivity === "" ||
+                selectedFood === ""
+            ) {
+
+                alert(
+                    "Please select your shirt colour, activity, and food preference first. 💗"
+                );
+
+                return;
+
+            }
+
+
+            const foodDescription =
+                foodRecommendations[selectedFood];
+
+            const activityDescription =
+                activityRecommendations[selectedActivity];
+
+
+            planText.textContent =
+                "Your chosen shirt colour is " +
+                selectedShirt +
+                ". " +
+
+                "For our activity, you selected " +
+                selectedActivity +
+                ". " +
+
+                activityDescription +
+                " " +
+
+                "For food, you selected " +
+                selectedFood +
+                ". " +
+
+                foodDescription +
+                " " +
+
+                "I think this could be a lovely date, " +
+                "but we can always change the plan together. " +
+                "The most important thing is spending time with you. 💗";
+
+
+            datePlan.classList.add("show");
+
+            datePlan.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        });
 
 
         /* =========================================
-           CONFETTI
-        ========================================== */
+           HEART EFFECT
+        ========================================= */
 
-        function createConfetti() {
+        function createHeartBurst() {
 
-            const symbols = [
-                "💖",
-                "💗",
-                "💜",
-                "✨",
-                "🎉",
-                "💕",
-                "⭐"
-            ];
+            for (let i = 0; i < 18; i++) {
 
-
-            for (let i = 0; i < 100; i++) {
-
-                const confetti =
+                const heart =
                     document.createElement("div");
 
-                confetti.innerText =
-                    symbols[
-                        Math.floor(
-                            Math.random() * symbols.length
-                        )
+                heart.className = "floating-heart";
+
+                heart.textContent =
+                    ["💗", "💕", "💖", "✨", "💘"][
+                        Math.floor(Math.random() * 5)
                     ];
 
-                confetti.style.position = "fixed";
-
-                confetti.style.left =
+                heart.style.left =
                     Math.random() * 100 + "vw";
 
-                confetti.style.top = "-30px";
+                heart.style.top =
+                    60 + Math.random() * 30 + "vh";
 
-                confetti.style.fontSize =
-                    Math.random() * 20 + 10 + "px";
+                heart.style.fontSize =
+                    15 + Math.random() * 25 + "px";
 
-                confetti.style.zIndex = "999";
+                heart.style.animationDuration =
+                    2 + Math.random() * 2 + "s";
 
-                confetti.style.pointerEvents = "none";
-
-
-                const duration =
-                    Math.random() * 3 + 2;
+                document.body.appendChild(heart);
 
 
-                confetti.style.animation =
-                    `fall ${duration}s linear forwards`;
-
-
-                document.body.appendChild(confetti);
-
-
-                setTimeout(() => {
-
-                    confetti.remove();
-
-                }, duration * 1000);
+                setTimeout(function () {
+                    heart.remove();
+                }, 4000);
 
             }
 
@@ -1077,162 +1859,119 @@
 
 
         /* =========================================
-           FLOATING HEARTS
-        ========================================== */
+           CONFETTI EFFECT
+        ========================================= */
 
-        function createFloatingHearts() {
+        function createConfetti() {
 
-            setInterval(() => {
+            const symbols = [
+                "💗",
+                "💕",
+                "💖",
+                "✨",
+                "🎉",
+                "💘"
+            ];
 
-                const heart =
+
+            for (let i = 0; i < 45; i++) {
+
+                const confetti =
                     document.createElement("div");
 
-                heart.className =
-                    "floating-heart";
+                confetti.textContent =
+                    symbols[
+                        Math.floor(Math.random() * symbols.length)
+                    ];
 
-                heart.innerText =
-                    ["💖", "💗", "💕", "💜", "✨"]
-                    [Math.floor(Math.random() * 5)];
-
-
-                heart.style.left =
+                confetti.style.position = "fixed";
+                confetti.style.top = "-30px";
+                confetti.style.left =
                     Math.random() * 100 + "vw";
 
-                heart.style.fontSize =
-                    Math.random() * 25 + 15 + "px";
+                confetti.style.fontSize =
+                    15 + Math.random() * 20 + "px";
 
-                heart.style.animationDuration =
-                    Math.random() * 4 + 4 + "s";
+                confetti.style.zIndex = "50";
+                confetti.style.pointerEvents = "none";
+
+                confetti.style.animation =
+                    "fall " +
+                    (2 + Math.random() * 3) +
+                    "s linear forwards";
 
 
-                document.body.appendChild(heart);
+                document.body.appendChild(confetti);
 
 
-                setTimeout(() => {
+                setTimeout(function () {
+                    confetti.remove();
+                }, 6000);
 
-                    heart.remove();
-
-                }, 8000);
-
-            }, 300);
+            }
 
         }
 
 
         /* =========================================
            PARTICLE SYSTEM
-        ========================================== */
+        ========================================= */
 
         const canvas =
-            document.getElementById("particles");
+            document.getElementById("particleCanvas");
 
-        const ctx =
+        const context =
             canvas.getContext("2d");
 
 
         let particles = [];
 
-
         function resizeCanvas() {
 
-            canvas.width =
-                window.innerWidth;
-
-            canvas.height =
-                window.innerHeight;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
 
         }
 
 
-        window.addEventListener(
-            "resize",
-            resizeCanvas
-        );
-
+        window.addEventListener("resize", resizeCanvas);
 
         resizeCanvas();
 
 
-        class Particle {
+        function createParticles() {
 
-            constructor() {
+            particles = [];
 
-                this.x =
-                    Math.random() * canvas.width;
-
-                this.y =
-                    Math.random() * canvas.height;
-
-                this.size =
-                    Math.random() * 2 + 0.5;
-
-                this.speedX =
-                    (Math.random() - .5) * .5;
-
-                this.speedY =
-                    (Math.random() - .5) * .5;
-
-                this.opacity =
-                    Math.random();
-
-            }
+            const particleCount = 70;
 
 
-            update() {
+            for (let i = 0; i < particleCount; i++) {
 
-                this.x += this.speedX;
-                this.y += this.speedY;
+                particles.push({
 
+                    x: Math.random() * canvas.width,
 
-                if (this.x < 0)
-                    this.x = canvas.width;
+                    y: Math.random() * canvas.height,
 
-                if (this.x > canvas.width)
-                    this.x = 0;
+                    size: Math.random() * 2 + 0.5,
 
-                if (this.y < 0)
-                    this.y = canvas.height;
+                    speedX: (Math.random() - 0.5) * 0.4,
 
-                if (this.y > canvas.height)
-                    this.y = 0;
+                    speedY: (Math.random() - 0.5) * 0.4,
+
+                    opacity: Math.random() * 0.5 + 0.1
+
+                });
 
             }
-
-
-            draw() {
-
-                ctx.beginPath();
-
-                ctx.arc(
-                    this.x,
-                    this.y,
-                    this.size,
-                    0,
-                    Math.PI * 2
-                );
-
-                ctx.fillStyle =
-                    `rgba(0,255,255,${this.opacity})`;
-
-                ctx.fill();
-
-            }
-
-        }
-
-
-        for (let i = 0; i < 120; i++) {
-
-            particles.push(
-                new Particle()
-            );
 
         }
 
 
         function animateParticles() {
 
-            ctx.clearRect(
+            context.clearRect(
                 0,
                 0,
                 canvas.width,
@@ -1240,44 +1979,58 @@
             );
 
 
-            particles.forEach(particle => {
+            particles.forEach(function (particle) {
 
-                particle.update();
-                particle.draw();
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+
+
+                if (particle.x < 0) {
+                    particle.x = canvas.width;
+                }
+
+                if (particle.x > canvas.width) {
+                    particle.x = 0;
+                }
+
+                if (particle.y < 0) {
+                    particle.y = canvas.height;
+                }
+
+                if (particle.y > canvas.height) {
+                    particle.y = 0;
+                }
+
+
+                context.beginPath();
+
+                context.arc(
+                    particle.x,
+                    particle.y,
+                    particle.size,
+                    0,
+                    Math.PI * 2
+                );
+
+                context.fillStyle =
+                    "rgba(255, 123, 213, " +
+                    particle.opacity +
+                    ")";
+
+                context.fill();
 
             });
 
 
-            requestAnimationFrame(
-                animateParticles
-            );
+            requestAnimationFrame(animateParticles);
 
         }
 
 
+        createParticles();
         animateParticles();
 
-
     </script>
-
-
-    <style>
-
-        @keyframes fall {
-
-            to {
-
-                transform:
-                    translateY(110vh)
-                    rotate(720deg);
-
-                opacity: 0;
-
-            }
-
-        }
-
-    </style>
 
 </body>
 </html>
