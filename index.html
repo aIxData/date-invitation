@@ -178,14 +178,13 @@
 
             margin-bottom: 15px;
 
-            background:
-                linear-gradient(
-                    90deg,
-                    #ff7bd5,
-                    #ffffff,
-                    #ff9ee3
-                );
-
+            background: linear-gradient(
+                90deg,
+                #ff7bd5,
+                #ffffff,
+                #ff9ee3
+            );
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -1656,29 +1655,19 @@
         */
 
         const SUPABASE_URL =
-           'https://ektwzpcyzdsefjtreqcj.supabase.co';
+            'https://ektwzpcyzdsefjtreqcj.supabase.co';
 
         const SUPABASE_PUBLISHABLE_KEY =
-            sb_publishable_7O1t9FHZ-lCQ1YoL684Ptw_ulcPEtvL;
-
+            'sb_publishable_7O1t9FHZ-lCQ1YoL684Ptw_ulcPEtvL';
 
         let supabaseClient = null;
 
-
-        if (
-            SUPABASE_URL !==
-                'https://ektwzpcyzdsefjtreqcj.supabase.co'
-            &&
-            SUPABASE_PUBLISHABLE_KEY !==
-                sb_publishable_7O1t9FHZ-lCQ1YoL684Ptw_ulcPEtvL"
-        ) {
-
-            supabaseClient =
-                window.supabase.createClient(
-                    SUPABASE_URL,
-                    SUPABASE_PUBLISHABLE_KEY
-                );
-
+        // Create the client when the URL and publishable key are present.
+        if (SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY) {
+            supabaseClient = window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
         }
 
 
