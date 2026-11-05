@@ -1,2943 +1,543 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Our Special Date 💗</title>
-
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            min-height: 100vh;
-
-            background:
-                radial-gradient(
-                    circle at top,
-                    #35104f,
-                    #12051d 45%,
-                    #05030a 100%
-                );
-
-            color: white;
-
-            overflow-x: hidden;
-        }
-
-        /* =========================================
-           BACKGROUND
-        ========================================= */
-
-        #backgroundCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 100%;
-
-            z-index: -2;
-        }
-
-        .grid {
-            position: fixed;
-            inset: 0;
-
-            background-image:
-                linear-gradient(
-                    rgba(255, 105, 180, 0.05) 1px,
-                    transparent 1px
-                ),
-                linear-gradient(
-                    90deg,
-                    rgba(255, 105, 180, 0.05) 1px,
-                    transparent 1px
-                );
-
-            background-size: 40px 40px;
-
-            perspective: 500px;
-
-            z-index: -1;
-
-            opacity: 0.35;
-        }
-
-        /* =========================================
-           PAGE SYSTEM
-        ========================================= */
-
-        .page {
-            display: none;
-
-            min-height: 100vh;
-
-            padding:
-                40px
-                20px;
-
-            align-items: center;
-            justify-content: center;
-
-            animation: pageIn 0.7s ease;
-        }
-
-        .page.active {
-            display: flex;
-        }
-
-        @keyframes pageIn {
-
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-        }
-
-        /* =========================================
-           GLASS CARD
-        ========================================= */
-
-        .glass-card {
-
-            width: min(950px, 95%);
-
-            padding: 40px;
-
-            border-radius: 30px;
-
-            background:
-                rgba(255, 255, 255, 0.07);
-
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.15);
-
-            backdrop-filter:
-                blur(18px);
-
-            -webkit-backdrop-filter:
-                blur(18px);
-
-            box-shadow:
-                0 0 40px
-                rgba(255, 0, 170, 0.12);
-
-            text-align: center;
-        }
-
-        /* =========================================
-           TEXT
-        ========================================= */
-
-        .eyebrow {
-
-            color: #ff8bd8;
-
-            letter-spacing: 4px;
-
-            font-size: 12px;
-
-            text-transform: uppercase;
-
-            margin-bottom: 15px;
-        }
-
-        h1 {
-
-            font-size:
-                clamp(36px, 7vw, 72px);
-
-            margin-bottom: 15px;
-
-            background: linear-gradient(
-                90deg,
-                #ff7bd5,
-                #ffffff,
-                #ff9ee3
-            );
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        h2 {
-
-            font-size:
-                clamp(28px, 5vw, 46px);
-
-            margin-bottom: 15px;
-        }
-
-        h3 {
-
-            margin-bottom: 10px;
-
-            color: #ff9ce3;
-        }
-
-        .subtitle {
-
-            color: #d9c9dd;
-
-            line-height: 1.7;
-
-            margin-bottom: 30px;
-        }
-
-        /* =========================================
-           INPUT
-        ========================================= */
-
-        .name-input {
-
-            width: min(500px, 100%);
-
-            padding: 17px 20px;
-
-            border-radius: 15px;
-
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.2);
-
-            background:
-                rgba(255, 255, 255, 0.08);
-
-            color: white;
-
-            font-size: 17px;
-
-            outline: none;
-
-            text-align: center;
-
-            transition: 0.3s;
-        }
-
-        .name-input:focus {
-
-            border-color: #ff65c7;
-
-            box-shadow:
-                0 0 20px
-                rgba(255, 101, 199, 0.25);
-        }
-
-        .name-input::placeholder {
-
-            color: #bcaec0;
-        }
-
-        /* =========================================
-           BUTTONS
-        ========================================= */
-
-        button {
-
-            border: none;
-
-            cursor: pointer;
-
-            font-family: inherit;
-        }
-
-        .main-btn {
-
-            margin-top: 20px;
-
-            padding:
-                15px
-                28px;
-
-            border-radius: 999px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #ff3cac,
-                    #784ba0
-                );
-
-            color: white;
-
-            font-size: 16px;
-
-            font-weight: bold;
-
-            box-shadow:
-                0 0 25px
-                rgba(255, 60, 172, 0.35);
-
-            transition: 0.3s;
-        }
-
-        .main-btn:hover {
-
-            transform:
-                translateY(-3px)
-                scale(1.03);
-
-            box-shadow:
-                0 0 35px
-                rgba(255, 60, 172, 0.55);
-        }
-
-        .secondary-btn {
-
-            padding:
-                12px
-                22px;
-
-            border-radius: 999px;
-
-            background:
-                rgba(255,255,255,0.08);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.15);
-
-            color: white;
-
-            transition: 0.3s;
-        }
-
-        .secondary-btn:hover {
-
-            background:
-                rgba(255,255,255,0.15);
-        }
-
-        /* =========================================
-           HEART
-        ========================================= */
-
-        .heart-wrapper {
-
-            display: flex;
-
-            justify-content: center;
-
-            margin:
-                30px
-                0;
-        }
-
-        .big-heart {
-
-            font-size:
-                clamp(100px, 25vw, 190px);
-
-            cursor: pointer;
-
-            filter:
-                drop-shadow(
-                    0 0 25px
-                    rgba(255, 60, 172, 0.8)
-                );
-
-            animation:
-                heartBeat 1.3s infinite;
-
-            user-select: none;
-
-            transition: 0.3s;
-        }
-
-        .big-heart:hover {
-
-            transform:
-                scale(1.12);
-        }
-
-        @keyframes heartBeat {
-
-            0%, 100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.12);
-            }
-
-        }
-
-        /* =========================================
-           PERSONAL GREETING
-        ========================================= */
-
-        .personal-name {
-
-            color: #ff8cda;
-
-            font-weight: bold;
-        }
-
-        /* =========================================
-           INVITATION DETAILS
-        ========================================= */
-
-        .details-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 15px;
-
-            margin:
-                30px
-                0;
-        }
-
-        .detail-card {
-
-            padding: 20px;
-
-            border-radius: 20px;
-
-            background:
-                rgba(255,255,255,0.06);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.1);
-        }
-
-        .detail-icon {
-
-            font-size: 30px;
-
-            margin-bottom: 8px;
-        }
-
-        .detail-label {
-
-            color: #aaa;
-
-            font-size: 13px;
-
-            margin-bottom: 5px;
-        }
-
-        /* =========================================
-           PLANNER
-        ========================================= */
-
-        .planner-container {
-
-            width: min(1000px, 95%);
-        }
-
-        .planner-section {
-
-            margin:
-                30px
-                0;
-
-            text-align: left;
-        }
-
-        .planner-section h3 {
-
-            margin-bottom: 15px;
-        }
-
-        .option-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(130px, 1fr));
-
-            gap: 12px;
-        }
-
-        .option-btn {
-
-            padding:
-                15px
-                12px;
-
-            border-radius: 16px;
-
-            color: white;
-
-            background:
-                rgba(255,255,255,0.06);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.12);
-
-            transition: 0.25s;
-
-            font-size: 14px;
-        }
-
-        .option-btn:hover {
-
-            transform:
-                translateY(-3px);
-
-            background:
-                rgba(255,105,180,0.12);
-
-            border-color:
-                rgba(255,105,180,0.4);
-        }
-
-        .option-btn.selected {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255,60,172,0.45),
-                    rgba(120,75,160,0.45)
-                );
-
-            border-color:
-                #ff73cf;
-
-            box-shadow:
-                0 0 20px
-                rgba(255,60,172,0.2);
-        }
-
-        /* =========================================
-           FORM
-        ========================================= */
-
-        .form-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 15px;
-        }
-
-        .form-group {
-
-            text-align: left;
-        }
-
-        .form-group.full {
-
-            grid-column:
-                1 / -1;
-        }
-
-        .form-group label {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #ffb0e7;
-
-            font-size: 14px;
-        }
-
-        input,
-        select,
-        textarea {
-
-            width: 100%;
-
-            padding: 14px;
-
-            border-radius: 12px;
-
-            border:
-                1px solid
-                rgba(255,255,255,0.15);
-
-            background:
-                rgba(255,255,255,0.07);
-
-            color: white;
-
-            outline: none;
-
-            font-family: inherit;
-
-            font-size: 15px;
-        }
-
-        select option {
-
-            background: #24112f;
-
-            color: white;
-        }
-
-        textarea {
-
-            min-height: 110px;
-
-            resize: vertical;
-        }
-
-        input:focus,
-        select:focus,
-        textarea:focus {
-
-            border-color:
-                #ff6bc8;
-
-            box-shadow:
-                0 0 15px
-                rgba(255,107,200,0.15);
-        }
-
-        /* =========================================
-           GENERATED PLAN
-        ========================================= */
-
-        .generated-plan {
-
-            margin-top: 30px;
-
-            padding: 25px;
-
-            border-radius: 22px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255,60,172,0.13),
-                    rgba(120,75,160,0.13)
-                );
-
-            border:
-                1px solid
-                rgba(255,120,210,0.2);
-
-            display: none;
-
-            text-align: left;
-        }
-
-        .generated-plan.show {
-
-            display: block;
-
-            animation:
-                pageIn 0.5s ease;
-        }
-
-        .plan-line {
-
-            margin:
-                10px
-                0;
-
-            color: #e9ddea;
-
-            line-height: 1.6;
-        }
-
-        .plan-line strong {
-
-            color: #ff9bdf;
-        }
-
-        /* =========================================
-           RESPONSE BUTTONS
-        ========================================= */
-
-        .response-area {
-
-            margin-top: 35px;
-        }
-
-        .response-buttons {
-
-            display: flex;
-
-            justify-content: center;
-
-            gap: 15px;
-
-            flex-wrap: wrap;
-
-            margin-top: 20px;
-        }
-
-        .yes-btn {
-
-            padding:
-                15px
-                35px;
-
-            border-radius: 999px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #ff3cac,
-                    #ff6f91
-                );
-
-            color: white;
-
-            font-weight: bold;
-
-            font-size: 17px;
-
-            box-shadow:
-                0 0 25px
-                rgba(255,60,172,0.3);
-        }
-
-        .maybe-btn {
-
-            padding:
-                15px
-                35px;
-
-            border-radius: 999px;
-
-            background:
-                rgba(255,255,255,0.08);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.2);
-
-            color: white;
-
-            font-size: 17px;
-        }
-
-        /* =========================================
-           SUCCESS PAGE
-        ========================================= */
-
-        .success-heart {
-
-            font-size: 100px;
-
-            animation:
-                heartBeat 1s infinite;
-        }
-
-        .success-message {
-
-            color: #ddd;
-
-            line-height: 1.7;
-
-            margin:
-                20px
-                0;
-        }
-
-        .whatsapp-btn {
-
-            display: inline-block;
-
-            margin-top: 15px;
-
-            padding:
-                14px
-                25px;
-
-            border-radius: 999px;
-
-            background:
-                #25D366;
-
-            color: white;
-
-            text-decoration: none;
-
-            font-weight: bold;
-
-            transition: 0.3s;
-        }
-
-        .whatsapp-btn:hover {
-
-            transform:
-                translateY(-3px);
-
-            box-shadow:
-                0 0 25px
-                rgba(37,211,102,0.4);
-        }
-
-        /* =========================================
-           TOAST
-        ========================================= */
-
-        .toast {
-
-            position: fixed;
-
-            bottom: 25px;
-            left: 50%;
-
-            transform:
-                translateX(-50%)
-                translateY(100px);
-
-            background:
-                rgba(25,10,35,0.95);
-
-            border:
-                1px solid
-                rgba(255,120,210,0.3);
-
-            padding:
-                14px
-                22px;
-
-            border-radius: 999px;
-
-            color: white;
-
-            z-index: 1000;
-
-            opacity: 0;
-
-            transition: 0.4s;
-
-            box-shadow:
-                0 0 25px
-                rgba(255,60,172,0.2);
-        }
-
-        .toast.show {
-
-            opacity: 1;
-
-            transform:
-                translateX(-50%)
-                translateY(0);
-        }
-
-        /* =========================================
-           HEART PARTICLES
-        ========================================= */
-
-        .floating-heart {
-
-            position: fixed;
-
-            pointer-events: none;
-
-            font-size: 22px;
-
-            z-index: 999;
-
-            animation:
-                floatHeart 1.5s ease-out forwards;
-        }
-
-        @keyframes floatHeart {
-
-            0% {
-
-                opacity: 1;
-
-                transform:
-                    translateY(0)
-                    scale(1);
-            }
-
-            100% {
-
-                opacity: 0;
-
-                transform:
-                    translateY(-180px)
-                    scale(0.3);
-            }
-        }
-
-        /* =========================================
-           MOBILE
-        ========================================= */
-
-        @media (max-width: 700px) {
-
-            .page {
-
-                padding:
-                    25px
-                    12px;
-            }
-
-            .glass-card {
-
-                padding:
-                    25px
-                    18px;
-
-                border-radius: 24px;
-            }
-
-            .details-grid {
-
-                grid-template-columns:
-                    1fr;
-            }
-
-            .form-grid {
-
-                grid-template-columns:
-                    1fr;
-            }
-
-            .form-group.full {
-
-                grid-column:
-                    auto;
-            }
-
-            .option-grid {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .option-btn {
-
-                padding:
-                    13px
-                    8px;
-
-                font-size: 13px;
-            }
-
-            h1 {
-
-                font-size: 40px;
-            }
-
-            h2 {
-
-                font-size: 30px;
-            }
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Special Date 💗</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Arial,Helvetica,sans-serif;min-height:100vh;background:radial-gradient(circle at top,#35104f,#12051d 45%,#05030a 100%);color:#fff;overflow-x:hidden}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:-2}
+.grid{position:fixed;inset:0;z-index:-1;opacity:.35;background-size:40px 40px;background-image:linear-gradient(rgba(255,105,180,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,105,180,.05) 1px,transparent 1px)}
+.page{display:none;min-height:100vh;padding:40px 20px;align-items:center;justify-content:center;animation:pageIn .7s ease}
+.page.active{display:flex}
+@keyframes pageIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.card{width:min(950px,95%);padding:40px;border-radius:30px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 0 40px rgba(255,0,170,.12);text-align:center}
+.eyebrow{color:#ff8bd8;letter-spacing:4px;font-size:12px;text-transform:uppercase;margin-bottom:15px}
+h1{font-size:clamp(36px,7vw,72px);margin-bottom:15px;background:linear-gradient(90deg,#ff7bd5,#fff,#ff9ee3);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+h2{font-size:clamp(28px,5vw,46px);margin-bottom:15px}
+h3{margin-bottom:10px;color:#ff9ce3}
+.subtitle{color:#d9c9dd;line-height:1.7;margin-bottom:30px}
+.name-input{width:min(500px,100%);padding:17px 20px;border-radius:15px;text-align:center;font-size:17px}
+input,select,textarea{width:100%;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;outline:none;font-family:inherit;font-size:15px;transition:.3s}
+input:focus,select:focus,textarea:focus{border-color:#ff65c7;box-shadow:0 0 15px rgba(255,101,199,.25)}
+input::placeholder,textarea::placeholder{color:#bcaec0}
+select option{background:#24112f;color:#fff}
+textarea{min-height:110px;resize:vertical}
+button{border:none;cursor:pointer;font-family:inherit;color:#fff}
+.main-btn{margin-top:20px;padding:15px 28px;border-radius:999px;background:linear-gradient(135deg,#ff3cac,#784ba0);font-size:16px;font-weight:bold;box-shadow:0 0 25px rgba(255,60,172,.35);transition:.3s}
+.main-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 0 35px rgba(255,60,172,.55)}
+.secondary-btn{padding:12px 22px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);transition:.3s}
+.secondary-btn:hover{background:rgba(255,255,255,.15)}
+button:disabled{opacity:.6;cursor:wait}
+.heart-wrapper{display:flex;justify-content:center;margin:30px 0}
+.big-heart{font-size:clamp(100px,25vw,190px);cursor:pointer;filter:drop-shadow(0 0 25px rgba(255,60,172,.8));animation:beat 1.3s infinite;user-select:none}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.personal-name{color:#ff8cda;font-weight:bold}
+.details-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:30px 0}
+.detail-card{padding:20px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.detail-icon{font-size:30px;margin-bottom:8px}
+.detail-label{color:#aaa;font-size:13px;margin-bottom:5px}
+.planner{width:min(1000px,95%)}
+.section{margin:30px 0;text-align:left}
+.section h3{margin-bottom:15px}
+.option-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.option-btn{padding:15px 12px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);transition:.25s;font-size:14px}
+.option-btn:hover{transform:translateY(-3px);background:rgba(255,105,180,.12);border-color:rgba(255,105,180,.4)}
+.option-btn.selected{background:linear-gradient(135deg,rgba(255,60,172,.45),rgba(120,75,160,.45));border-color:#ff73cf;box-shadow:0 0 20px rgba(255,60,172,.2)}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+.form-group{text-align:left}
+.form-group.full{grid-column:1/-1}
+.form-group label{display:block;margin-bottom:8px;color:#ffb0e7;font-size:14px}
+.generated-plan{display:none;margin-top:30px;padding:25px;border-radius:22px;text-align:left;background:linear-gradient(135deg,rgba(255,60,172,.13),rgba(120,75,160,.13));border:1px solid rgba(255,120,210,.2)}
+.generated-plan.show{display:block;animation:pageIn .5s ease}
+.plan-line{margin:10px 0;color:#e9ddea;line-height:1.6}
+.plan-line strong{color:#ff9bdf}
+.response-area{display:none;margin-top:35px}
+.response-buttons{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:20px}
+.yes-btn,.maybe-btn{padding:15px 35px;border-radius:999px;font-size:17px}
+.yes-btn{background:linear-gradient(135deg,#ff3cac,#ff6f91);font-weight:bold;box-shadow:0 0 25px rgba(255,60,172,.3)}
+.maybe-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2)}
+.error-box{display:none;margin-top:20px;padding:14px;border-radius:12px;background:rgba(255,60,60,.15);border:1px solid rgba(255,100,100,.4);text-align:left;font-size:13px;line-height:1.5;word-break:break-word}
+.success-heart{font-size:100px;animation:beat 1s infinite}
+.success-message{color:#ddd;line-height:1.7;margin:20px 0}
+.whatsapp-btn{display:inline-block;margin-top:15px;padding:14px 25px;border-radius:999px;background:#25D366;color:#fff;text-decoration:none;font-weight:bold;transition:.3s}
+.whatsapp-btn:hover{transform:translateY(-3px);box-shadow:0 0 25px rgba(37,211,102,.4)}
+.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(25,10,35,.95);border:1px solid rgba(255,120,210,.3);padding:14px 22px;border-radius:999px;z-index:1000;opacity:0;transition:.4s;max-width:92%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.floating-heart{position:fixed;pointer-events:none;font-size:22px;z-index:999;animation:floatHeart 1.5s ease-out forwards}
+@keyframes floatHeart{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-180px) scale(.3)}}
+@media(max-width:700px){
+.page{padding:25px 12px}.card{padding:25px 18px;border-radius:24px}
+.details-grid,.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}
+.option-grid{grid-template-columns:repeat(2,1fr)}.option-btn{padding:13px 8px;font-size:13px}
+h1{font-size:40px}h2{font-size:30px}}
+</style>
 </head>
-
 <body>
-
-    <canvas id="backgroundCanvas"></canvas>
-
-    <div class="grid"></div>
-
-
-    <!-- =========================================
-         PAGE 1 — NAME
-    ========================================= -->
-
-    <section
-        id="namePage"
-        class="page active"
-    >
-
-        <div class="glass-card">
-
-            <div class="eyebrow">
-                A little something for you
-            </div>
-
-            <h1>
-                Hello, Beautiful 💗
-            </h1>
-
-            <p class="subtitle">
-                Before we begin...
-                what should I call you?
-            </p>
-
-            <input
-                id="nameInput"
-                class="name-input"
-                type="text"
-                placeholder="Enter your name / surname"
-                maxlength="50"
-            >
-
-            <br>
-
-            <button
-                id="continueNameBtn"
-                class="main-btn"
-            >
-                Continue 💕
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================
-         PAGE 2 — INVITATION
-    ========================================= -->
-
-    <section
-        id="invitationPage"
-        class="page"
-    >
-
-        <div class="glass-card">
-
-            <div class="eyebrow">
-                Special invitation
-            </div>
-
-            <h2>
-                Hello,
-                <span
-                    id="displayName"
-                    class="personal-name"
-                >
-                </span>
-                💗
-            </h2>
-
-            <p class="subtitle">
-
-                Someone has prepared
-                a little something special
-                just for you.
-
-            </p>
-
-            <div class="heart-wrapper">
-
-                <div
-                    id="bigHeart"
-                    class="big-heart"
-                >
-                    💗
-                </div>
-
-            </div>
-
-            <p class="subtitle">
-
-                Tap the heart
-                to open your invitation.
-
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================
-         PAGE 3 — DATE DETAILS
-    ========================================= -->
-
-    <section
-        id="detailsPage"
-        class="page"
-    >
-
-        <div class="glass-card">
-
-            <div class="eyebrow">
-                You are invited
-            </div>
-
-            <h2>
-                A Date With Me 💕
-            </h2>
-
-            <p class="subtitle">
-
-                I would really love to spend
-                some quality time with you.
-
-            </p>
-
-            <div class="details-grid">
-
-                <div class="detail-card">
-
-                    <div class="detail-icon">
-                        📅
-                    </div>
-
-                    <div class="detail-label">
-                        Date
-                    </div>
-
-                    <div>
-                        Let's decide together
-                    </div>
-
-                </div>
-
-
-                <div class="detail-card">
-
-                    <div class="detail-icon">
-                        ⏰
-                    </div>
-
-                    <div class="detail-label">
-                        Time
-                    </div>
-
-                    <div>
-                        You choose
-                    </div>
-
-                </div>
-
-
-                <div class="detail-card">
-
-                    <div class="detail-icon">
-                        💗
-                    </div>
-
-                    <div class="detail-label">
-                        Dress Code
-                    </div>
-
-                    <div>
-                        Something cute
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <button
-                id="openPlannerBtn"
-                class="main-btn"
-            >
-                Let's Plan Our Date 💕
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================
-         PAGE 4 — PLANNER
-    ========================================= -->
-
-    <section
-        id="plannerPage"
-        class="page"
-    >
-
-        <div class="glass-card planner-container">
-
-            <button
-                id="backToInvitationBtn"
-                class="secondary-btn"
-            >
-                ← Back
-            </button>
-
-            <br>
-            <br>
-
-            <div class="eyebrow">
-                Our little date planner
-            </div>
-
-            <h2>
-                Let's Plan Our Date 💕
-            </h2>
-
-            <p class="subtitle">
-
-                Pick whatever feels right.
-                We can make the date ours.
-
-            </p>
-
-
-            <!-- SHIRT -->
-
-            <div class="planner-section">
-
-                <h3>
-                    👕 What colour will you wear?
-                </h3>
-
-                <div class="option-grid">
-
-                    <button
-                        class="option-btn shirt-option"
-                        data-value="Pink"
-                    >
-                        🌸 Pink
-                    </button>
-
-                    <button
-                        class="option-btn shirt-option"
-                        data-value="Black"
-                    >
-                        🖤 Black
-                    </button>
-
-                    <button
-                        class="option-btn shirt-option"
-                        data-value="White"
-                    >
-                        🤍 White
-                    </button>
-
-                    <button
-                        class="option-btn shirt-option"
-                        data-value="Blue"
-                    >
-                        💙 Blue
-                    </button>
-
-                    <button
-                        class="option-btn shirt-option"
-                        data-value="Purple"
-                    >
-                        💜 Purple
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- ACTIVITY -->
-
-            <div class="planner-section">
-
-                <h3>
-                    🎯 What should we do?
-                </h3>
-
-                <div class="option-grid">
-
-                    <button
-                        class="option-btn activity-option"
-                        data-value="Cafe Date"
-                    >
-                        ☕ Cafe Date
-                    </button>
-
-                    <button
-                        class="option-btn activity-option"
-                        data-value="Movie"
-                    >
-                        🎬 Movie
-                    </button>
-
-                    <button
-                        class="option-btn activity-option"
-                        data-value="Picnic"
-                    >
-                        🧺 Picnic
-                    </button>
-
-                    <button
-                        class="option-btn activity-option"
-                        data-value="Shopping"
-                    >
-                        🛍️ Shopping
-                    </button>
-
-                    <button
-                        class="option-btn activity-option"
-                        data-value="Romantic Dinner"
-                    >
-                        🍷 Romantic Dinner
-                    </button>
-
-                    <button
-                        class="option-btn activity-option"
-                        data-value="Adventure"
-                    >
-                        🌄 Adventure
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- FOOD -->
-
-            <div class="planner-section">
-
-                <h3>
-                    🍱 What would you like to eat?
-                </h3>
-
-                <div class="option-grid">
-
-                    <button
-                        class="option-btn food-option"
-                        data-value="Western"
-                    >
-                        🍝 Western
-                    </button>
-
-                    <button
-                        class="option-btn food-option"
-                        data-value="Japanese"
-                    >
-                        🍣 Japanese
-                    </button>
-
-                    <button
-                        class="option-btn food-option"
-                        data-value="Korean"
-                    >
-                        🥢 Korean
-                    </button>
-
-                    <button
-                        class="option-btn food-option"
-                        data-value="Malaysian"
-                    >
-                        🍛 Malaysian
-                    </button>
-
-                    <button
-                        class="option-btn food-option"
-                        data-value="Dessert"
-                    >
-                        🍰 Dessert
-                    </button>
-
-                    <button
-                        class="option-btn food-option"
-                        data-value="Surprise Me"
-                    >
-                        🎁 Surprise Me
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- DATE DETAILS -->
-
-            <div class="planner-section">
-
-                <h3>
-                    📅 Tell me a little more
-                </h3>
-
-                <div class="form-grid">
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Preferred Date
-                        </label>
-
-                        <input
-                            id="preferredDate"
-                            type="date"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Preferred Time
-                        </label>
-
-                        <input
-                            id="preferredTime"
-                            type="time"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>
-                            📍 Location
-                        </label>
-
-                        <select
-                            id="locationPreference"
-                        >
-
-                            <option value="">
-                                Choose one
-                            </option>
-
-                            <option value="Cafe">
-                                ☕ Cafe
-                            </option>
-
-                            <option value="Shopping Mall">
-                                🛍️ Shopping Mall
-                            </option>
-
-                            <option value="Park">
-                                🌳 Park
-                            </option>
-
-                            <option value="Restaurant">
-                                🍽️ Restaurant
-                            </option>
-
-                            <option value="Cinema">
-                                🎬 Cinema
-                            </option>
-
-                            <option value="Surprise">
-                                🎁 Surprise Me
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>
-                            💰 Budget
-                        </label>
-
-                        <select
-                            id="budget"
-                        >
-
-                            <option value="">
-                                Choose one
-                            </option>
-
-                            <option value="Casual">
-                                💵 Casual
-                            </option>
-
-                            <option value="Moderate">
-                                💰 Moderate
-                            </option>
-
-                            <option value="Special">
-                                💎 Special
-                            </option>
-
-                            <option value="Surprise">
-                                🎁 Surprise Me
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-group full">
-
-                        <label>
-                            💬 Anything else you want?
-                        </label>
-
-                        <textarea
-                            id="specialRequest"
-                            placeholder="Tell me anything... food you want, somewhere you want to go, something cute you want to do, etc. 💗"
-                            maxlength="500"
-                        ></textarea>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- GENERATE -->
-
-            <button
-                id="generatePlanBtn"
-                class="main-btn"
-            >
-                ✨ Generate Our Date Plan
-            </button>
-
-
-            <!-- GENERATED PLAN -->
-
-            <div
-                id="generatedPlan"
-                class="generated-plan"
-            >
-
-                <h3>
-                    💕 Our Date Plan
-                </h3>
-
-                <div
-                    id="planText"
-                    class="plan-line"
-                >
-                </div>
-
-            </div>
-
-
-            <!-- RESPONSE -->
-
-            <div
-                id="responseArea"
-                class="response-area"
-                style="display:none;"
-            >
-
-                <h3>
-                    So... what do you say? 💗
-                </h3>
-
-                <p class="subtitle">
-                    No pressure.
-                    Just choose what your heart says.
-                </p>
-
-                <div class="response-buttons">
-
-                    <button
-                        id="yesButton"
-                        class="yes-btn"
-                    >
-                        YES 💗
-                    </button>
-
-                    <button
-                        id="maybeButton"
-                        class="maybe-btn"
-                    >
-                        MAYBE 💕
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <br>
-
-            <button
-                id="returnInvitationBtn"
-                class="secondary-btn"
-            >
-                ← Return to Invitation
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================
-         PAGE 5 — SUCCESS
-    ========================================= -->
-
-    <section
-        id="successPage"
-        class="page"
-    >
-
-        <div class="glass-card">
-
-            <div class="success-heart">
-                💗
-            </div>
-
-            <div class="eyebrow">
-                It's a date!
-            </div>
-
-            <h2>
-                Thank You,
-                <span
-                    id="successName"
-                    class="personal-name"
-                >
-                </span>
-                💕
-            </h2>
-
-            <p
-                id="successMessage"
-                class="success-message"
-            >
-                I can't wait to spend some
-                beautiful time with you.
-            </p>
-
-            <a
-                id="whatsappBtn"
-                class="whatsapp-btn"
-                href="#"
-                target="_blank"
-            >
-                📱 Send Confirmation
-            </a>
-
-        </div>
-
-    </section>
-
-
-    <!-- TOAST -->
-
-    <div
-        id="toast"
-        class="toast"
-    >
-        Saved 💗
+<canvas id="bg"></canvas>
+<div class="grid"></div>
+
+<!-- PAGE 1: NAME -->
+<section id="namePage" class="page active">
+  <div class="card">
+    <div class="eyebrow">A little something for you</div>
+    <h1>Hello, Beautiful 💗</h1>
+    <p class="subtitle">Before we begin... what should I call you?</p>
+    <input id="nameInput" class="name-input" type="text" placeholder="Enter your name / surname" maxlength="50">
+    <br>
+    <button id="continueNameBtn" class="main-btn">Continue 💕</button>
+  </div>
+</section>
+
+<!-- PAGE 2: INVITATION -->
+<section id="invitationPage" class="page">
+  <div class="card">
+    <div class="eyebrow">Special invitation</div>
+    <h2>Hello, <span id="displayName" class="personal-name"></span> 💗</h2>
+    <p class="subtitle">Someone has prepared a little something special just for you.</p>
+    <div class="heart-wrapper"><div id="bigHeart" class="big-heart">💗</div></div>
+    <p class="subtitle">Tap the heart to open your invitation.</p>
+  </div>
+</section>
+
+<!-- PAGE 3: DETAILS -->
+<section id="detailsPage" class="page">
+  <div class="card">
+    <div class="eyebrow">You are invited</div>
+    <h2>A Date With Me 💕</h2>
+    <p class="subtitle">I would really love to spend some quality time with you.</p>
+    <div class="details-grid">
+      <div class="detail-card"><div class="detail-icon">📅</div><div class="detail-label">Date</div><div>Let's decide together</div></div>
+      <div class="detail-card"><div class="detail-icon">⏰</div><div class="detail-label">Time</div><div>You choose</div></div>
+      <div class="detail-card"><div class="detail-icon">💗</div><div class="detail-label">Dress Code</div><div>Something cute</div></div>
+    </div>
+    <button id="openPlannerBtn" class="main-btn">Let's Plan Our Date 💕</button>
+  </div>
+</section>
+
+<!-- PAGE 4: PLANNER -->
+<section id="plannerPage" class="page">
+  <div class="card planner">
+    <button id="backBtn" class="secondary-btn">← Back</button>
+    <br><br>
+    <div class="eyebrow">Our little date planner</div>
+    <h2>Let's Plan Our Date 💕</h2>
+    <p class="subtitle">Pick whatever feels right. We can make the date ours.</p>
+
+    <div class="section">
+      <h3>👕 What colour will you wear?</h3>
+      <div class="option-grid">
+        <button class="option-btn" data-group="shirt" data-value="Pink">🌸 Pink</button>
+        <button class="option-btn" data-group="shirt" data-value="Black">🖤 Black</button>
+        <button class="option-btn" data-group="shirt" data-value="White">🤍 White</button>
+        <button class="option-btn" data-group="shirt" data-value="Blue">💙 Blue</button>
+        <button class="option-btn" data-group="shirt" data-value="Purple">💜 Purple</button>
+      </div>
     </div>
 
+    <div class="section">
+      <h3>🎯 What should we do?</h3>
+      <div class="option-grid">
+        <button class="option-btn" data-group="activity" data-value="Cafe Date">☕ Cafe Date</button>
+        <button class="option-btn" data-group="activity" data-value="Movie">🎬 Movie</button>
+        <button class="option-btn" data-group="activity" data-value="Picnic">🧺 Picnic</button>
+        <button class="option-btn" data-group="activity" data-value="Shopping">🛍️ Shopping</button>
+        <button class="option-btn" data-group="activity" data-value="Romantic Dinner">🍷 Romantic Dinner</button>
+        <button class="option-btn" data-group="activity" data-value="Adventure">🌄 Adventure</button>
+      </div>
+    </div>
 
-    <script>
+    <div class="section">
+      <h3>🍱 What would you like to eat?</h3>
+      <div class="option-grid">
+        <button class="option-btn" data-group="food" data-value="Western">🍝 Western</button>
+        <button class="option-btn" data-group="food" data-value="Japanese">🍣 Japanese</button>
+        <button class="option-btn" data-group="food" data-value="Korean">🥢 Korean</button>
+        <button class="option-btn" data-group="food" data-value="Malaysian">🍛 Malaysian</button>
+        <button class="option-btn" data-group="food" data-value="Dessert">🍰 Dessert</button>
+        <button class="option-btn" data-group="food" data-value="Surprise Me">🎁 Surprise Me</button>
+      </div>
+    </div>
 
-        /* =========================================
-           SUPABASE CONFIGURATION
-        ========================================= */
+    <div class="section">
+      <h3>📅 Tell me a little more</h3>
+      <div class="form-grid">
+        <div class="form-group"><label for="preferredDate">Preferred Date</label><input id="preferredDate" type="date"></div>
+        <div class="form-group"><label for="preferredTime">Preferred Time</label><input id="preferredTime" type="time"></div>
+        <div class="form-group">
+          <label for="locationPreference">📍 Location</label>
+          <select id="locationPreference">
+            <option value="">Choose one</option>
+            <option value="Cafe">☕ Cafe</option>
+            <option value="Shopping Mall">🛍️ Shopping Mall</option>
+            <option value="Park">🌳 Park</option>
+            <option value="Restaurant">🍽️ Restaurant</option>
+            <option value="Cinema">🎬 Cinema</option>
+            <option value="Surprise">🎁 Surprise Me</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="budget">💰 Budget</label>
+          <select id="budget">
+            <option value="">Choose one</option>
+            <option value="Casual">💵 Casual</option>
+            <option value="Moderate">💰 Moderate</option>
+            <option value="Special">💎 Special</option>
+            <option value="Surprise">🎁 Surprise Me</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="specialRequest">💬 Anything else you want?</label>
+          <textarea id="specialRequest" maxlength="500" placeholder="Tell me anything... food you want, somewhere you want to go, something cute you want to do, etc. 💗"></textarea>
+        </div>
+      </div>
+    </div>
 
-        /*
-            IMPORTANT:
+    <button id="generatePlanBtn" class="main-btn">✨ Generate Our Date Plan</button>
 
-            Replace these two values with your
-            Supabase Project URL and PUBLISHABLE KEY.
+    <div id="generatedPlan" class="generated-plan">
+      <h3>💕 Our Date Plan</h3>
+      <div id="planText"></div>
+    </div>
 
-            NEVER put your Supabase SECRET key here.
-        */
+    <div id="responseArea" class="response-area">
+      <h3>So... what do you say? 💗</h3>
+      <p class="subtitle">No pressure. Just choose what your heart says.</p>
+      <div class="response-buttons">
+        <button id="yesButton" class="yes-btn">YES 💗</button>
+        <button id="maybeButton" class="maybe-btn">MAYBE 💕</button>
+      </div>
+      <div id="errorBox" class="error-box"></div>
+    </div>
 
-        const SUPABASE_URL =
-            'https://ektwzpcyzdsefjtreqcj.supabase.co';
+    <br>
+    <button id="returnBtn" class="secondary-btn">← Return to Invitation</button>
+  </div>
+</section>
 
-        const SUPABASE_PUBLISHABLE_KEY =
-            'sb_publishable_7O1t9FHZ-lCQ1YoL684Ptw_ulcPEtvL';
+<!-- PAGE 5: SUCCESS -->
+<section id="successPage" class="page">
+  <div class="card">
+    <div class="success-heart">💗</div>
+    <div class="eyebrow">It's a date!</div>
+    <h2>Thank You, <span id="successName" class="personal-name"></span> 💕</h2>
+    <p id="successMessage" class="success-message">I can't wait to spend some beautiful time with you.</p>
+    <a id="whatsappBtn" class="whatsapp-btn" href="#" target="_blank" rel="noopener">📱 Send Confirmation</a>
+  </div>
+</section>
 
-       let supabaseClient = null;
+<div id="toast" class="toast">Saved 💗</div>
 
-try {
-    if (window.supabase && SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY) {
-        supabaseClient = window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_PUBLISHABLE_KEY,
-            { auth: { persistSession: false } }
-        );
-    } else {
-        console.error("Supabase library failed to load or keys are missing.");
-    }
-} catch (e) {
-    console.error("Supabase init error:", e);
+<script>
+/* =========================================
+   CONFIG
+   The publishable key is safe to be public.
+   NEVER put your secret / service_role key here.
+   Responses are INSERT-ONLY (see the SQL setup);
+   nobody using this page can read them back.
+========================================= */
+const SUPABASE_URL = "https://ektwzpcyzdsefjtreqcj.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_7O1t9FHZ-lCQ1YoL684Ptw_ulcPEtvL";
+const TABLE = "date_responses";
+const WHATSAPP_NUMBER = "60189501257"; // no + or spaces
+
+/* =========================================
+   HELPERS
+========================================= */
+const $ = (id) => document.getElementById(id);
+
+function store(key, value) {
+  try { localStorage.setItem(key, value); } catch (e) {}
 }
-            );
-        }
-
-
-        /* =========================================
-           PAGE ELEMENTS
-        ========================================= */
-
-        const namePage =
-            document.getElementById("namePage");
-
-        const invitationPage =
-            document.getElementById("invitationPage");
-
-        const detailsPage =
-            document.getElementById("detailsPage");
-
-        const plannerPage =
-            document.getElementById("plannerPage");
-
-        const successPage =
-            document.getElementById("successPage");
-
-
-        const nameInput =
-            document.getElementById("nameInput");
-
-        const displayName =
-            document.getElementById("displayName");
-
-        const successName =
-            document.getElementById("successName");
-
-
-        /* =========================================
-           USER DATA
-        ========================================= */
-
-        let userName =
-            localStorage.getItem("dateName") || "";
-
-        let selectedShirt =
-            localStorage.getItem("shirtColor") || "";
-
-        let selectedActivity =
-            localStorage.getItem("activity") || "";
-
-        let selectedFood =
-            localStorage.getItem("food") || "";
-
-
-        /* =========================================
-           PAGE NAVIGATION
-        ========================================= */
-
-        function showPage(page) {
-
-            document
-                .querySelectorAll(".page")
-                .forEach(function (item) {
-
-                    item.classList.remove("active");
-
-                });
-
-
-            page.classList.add("active");
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-
-        }
-
-
-        /* =========================================
-           NAME
-        ========================================= */
-
-        document
-            .getElementById("continueNameBtn")
-            .addEventListener(
-                "click",
-                function () {
-
-                    const enteredName =
-                        nameInput.value.trim();
-
-
-                    if (!enteredName) {
-
-                        showToast(
-                            "Please enter your name first 💗"
-                        );
-
-                        nameInput.focus();
-
-                        return;
-                    }
-
-
-                    userName =
-                        enteredName;
-
-
-                    localStorage.setItem(
-                        "dateName",
-                        userName
-                    );
-
-
-                    displayName.textContent =
-                        userName;
-
-
-                    showPage(
-                        invitationPage
-                    );
-
-                }
-            );
-
-
-        nameInput.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (
-                    event.key === "Enter"
-                ) {
-
-                    document
-                        .getElementById(
-                            "continueNameBtn"
-                        )
-                        .click();
-
-                }
-
-            }
-        );
-
-
-        /* =========================================
-           OPEN HEART
-        ========================================= */
-
-        document
-            .getElementById("bigHeart")
-            .addEventListener(
-                "click",
-                function () {
-
-                    createHeartBurst();
-
-                    setTimeout(
-                        function () {
-
-                            showPage(
-                                detailsPage
-                            );
-
-                        },
-                        400
-                    );
-
-                }
-            );
-
-
-        /* =========================================
-           OPEN PLANNER
-        ========================================= */
-
-        document
-            .getElementById("openPlannerBtn")
-            .addEventListener(
-                "click",
-                function () {
-
-                    showPage(
-                        plannerPage
-                    );
-
-                }
-            );
-
-
-        /* =========================================
-           BACK BUTTON
-        ========================================= */
-
-        document
-            .getElementById("backToInvitationBtn")
-            .addEventListener(
-                "click",
-                function () {
-
-                    showPage(
-                        detailsPage
-                    );
-
-                }
-            );
-
-
-        document
-            .getElementById("returnInvitationBtn")
-            .addEventListener(
-                "click",
-                function () {
-
-                    showPage(
-                        detailsPage
-                    );
-
-                }
-            );
-
-
-        /* =========================================
-           OPTION BUTTON SYSTEM
-        ========================================= */
-
-        function setupOptions(
-            selector,
-            storageKey,
-            callback
-        ) {
-
-            document
-                .querySelectorAll(selector)
-                .forEach(function (button) {
-
-                    button.addEventListener(
-                        "click",
-                        function () {
-
-                            document
-                                .querySelectorAll(
-                                    selector
-                                )
-                                .forEach(
-                                    function (item) {
-
-                                        item.classList.remove(
-                                            "selected"
-                                        );
-
-                                    }
-                                );
-
-
-                            button.classList.add(
-                                "selected"
-                            );
-
-
-                            const value =
-                                button.dataset.value;
-
-
-                            localStorage.setItem(
-                                storageKey,
-                                value
-                            );
-
-
-                            callback(value);
-
-                        }
-                    );
-
-                });
-
-        }
-
-
-        setupOptions(
-            ".shirt-option",
-            "shirtColor",
-            function (value) {
-
-                selectedShirt = value;
-
-            }
-        );
-
-
-        setupOptions(
-            ".activity-option",
-            "activity",
-            function (value) {
-
-                selectedActivity = value;
-
-            }
-        );
-
-
-        setupOptions(
-            ".food-option",
-            "food",
-            function (value) {
-
-                selectedFood = value;
-
-            }
-        );
-
-
-        /* =========================================
-           RESTORE PREVIOUS OPTIONS
-        ========================================= */
-
-        function restoreSelectedOption(
-            selector,
-            value
-        ) {
-
-            if (!value) return;
-
-
-            document
-                .querySelectorAll(selector)
-                .forEach(function (button) {
-
-                    if (
-                        button.dataset.value ===
-                        value
-                    ) {
-
-                        button.classList.add(
-                            "selected"
-                        );
-
-                    }
-
-                });
-
-        }
-
-
-        restoreSelectedOption(
-            ".shirt-option",
-            selectedShirt
-        );
-
-
-        restoreSelectedOption(
-            ".activity-option",
-            selectedActivity
-        );
-
-
-        restoreSelectedOption(
-            ".food-option",
-            selectedFood
-        );
-
-
-        /* =========================================
-           DATE / TIME / FORM STORAGE
-        ========================================= */
-
-        const preferredDate =
-            document.getElementById(
-                "preferredDate"
-            );
-
-        const preferredTime =
-            document.getElementById(
-                "preferredTime"
-            );
-
-        const locationPreference =
-            document.getElementById(
-                "locationPreference"
-            );
-
-        const budget =
-            document.getElementById(
-                "budget"
-            );
-
-        const specialRequest =
-            document.getElementById(
-                "specialRequest"
-            );
-
-
-        function restoreInput(
-            element,
-            key
-        ) {
-
-            const saved =
-                localStorage.getItem(key);
-
-            if (saved) {
-
-                element.value =
-                    saved;
-
-            }
-
-        }
-
-
-        restoreInput(
-            preferredDate,
-            "preferredDate"
-        );
-
-        restoreInput(
-            preferredTime,
-            "preferredTime"
-        );
-
-        restoreInput(
-            locationPreference,
-            "locationPreference"
-        );
-
-        restoreInput(
-            budget,
-            "budget"
-        );
-
-        restoreInput(
-            specialRequest,
-            "specialRequest"
-        );
-
-
-        [
-            [preferredDate, "preferredDate"],
-            [preferredTime, "preferredTime"],
-            [locationPreference, "locationPreference"],
-            [budget, "budget"],
-            [specialRequest, "specialRequest"]
-        ]
-        .forEach(function (item) {
-
-            item[0].addEventListener(
-                "input",
-                function () {
-
-                    localStorage.setItem(
-                        item[1],
-                        item[0].value
-                    );
-
-                }
-            );
-
-        });
-
-
-        /* =========================================
-           GENERATE DATE PLAN
-        ========================================= */
-
-        const generatePlanBtn =
-            document.getElementById(
-                "generatePlanBtn"
-            );
-
-        const generatedPlan =
-            document.getElementById(
-                "generatedPlan"
-            );
-
-        const planText =
-            document.getElementById(
-                "planText"
-            );
-
-        const responseArea =
-            document.getElementById(
-                "responseArea"
-            );
-
-
-        generatePlanBtn.addEventListener(
-            "click",
-            function () {
-
-                if (!selectedActivity) {
-
-                    showToast(
-                        "Choose an activity first 💕"
-                    );
-
-                    return;
-                }
-
-
-                if (!selectedFood) {
-
-                    showToast(
-                        "Choose what you want to eat 🍱"
-                    );
-
-                    return;
-                }
-
-
-                const date =
-                    preferredDate.value ||
-                    "We'll decide the date together";
-
-
-                const time =
-                    preferredTime.value ||
-                    "We'll decide the time together";
-
-
-                const location =
-                    locationPreference.value ||
-                    "A surprise location";
-
-
-                const budgetValue =
-                    budget.value ||
-                    "Whatever feels comfortable";
-
-
-                const request =
-                    specialRequest.value.trim() ||
-                    "Nothing extra — just spending time together 💗";
-
-
-                let shirt =
-                    selectedShirt ||
-                    "Something cute";
-
-
-                let plan = "";
-
-
-                plan +=
-                    "<div class='plan-line'>" +
-                    "<strong>👤 For:</strong> " +
-                    escapeHtml(userName) +
-                    "</div>";
-
-
-                plan +=
-                    "<div class='plan-line'>" +
-                    "<strong>📅 Date:</strong> " +
-                    escapeHtml(date) +
-                    "</div>";
-
-
-                plan +=
-                    "<div class='plan-line'>" +
-                    "<strong>⏰ Time:</strong> " +
-                    escapeHtml(time) +
-                    "</div>";
-
-
-                plan +=
-                    "<div class='plan-line'>" +
-                    "<strong>👕 Outfit:</strong> " +
-                    escapeHtml(shirt) +
-                    "</div>";
-
-
-                plan +=
-                    "<div class='plan-line'>" +
-                    "<strong>🎯 Activity:</strong> " +
-                    escapeHtml(selectedActivity) +
-                    "</div>";
-
-
-                plan +=
-                    "<div class='plan-line'>" +
-                    "<strong>🍱 Food:</strong> " +
-                    escapeHtml(selectedFood) +
-                    "</div>";
-
-
-                plan +=
-                    "<div class='plan-line'>" +
-                    "<strong>📍 Location:</strong> " +
-                    escapeHtml(location) +
-                    "</div>";
-
-
-                plan +=
-                    "<div class='plan-line'>" +
-                    "<strong>💰 Budget:</strong> " +
-                    escapeHtml(budgetValue) +
-                    "</div>";
-
-
-                plan +=
-                    "<div class='plan-line'>" +
-                    "<strong>💬 Special request:</strong> " +
-                    escapeHtml(request) +
-                    "</div>";
-
-
-                planText.innerHTML =
-                    plan;
-
-
-                generatedPlan.classList.add(
-                    "show"
-                );
-
-
-                responseArea.style.display =
-                    "block";
-
-
-                generatedPlan.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-
-
-                showToast(
-                    "Your date plan is ready! ✨"
-                );
-
-            }
-        );
-
-
-        /* =========================================
-           ESCAPE HTML
-        ========================================= */
-
-        function escapeHtml(value) {
-
-            return String(value)
-                .replace(
-                    /&/g,
-                    "&amp;"
-                )
-                .replace(
-                    /</g,
-                    "&lt;"
-                )
-                .replace(
-                    />/g,
-                    "&gt;"
-                )
-                .replace(
-                    /"/g,
-                    "&quot;"
-                )
-                .replace(
-                    /'/g,
-                    "&#039;"
-                );
-
-        }
-
-
-        /* =========================================
-           SAVE TO SUPABASE
-        ========================================= */
-
-        async function saveDateResponse(response) {
-
-    if (!supabaseClient) {
-        showToast("Can't connect to the database. Please refresh.");
-        return false;
-    }
-
-    const payload = {
-        name: userName,
-        shirt_color: selectedShirt || null,
-        activity: selectedActivity || null,
-        food: selectedFood || null,
-        preferred_date: preferredDate.value || null,
-        preferred_time: preferredTime.value || null,
-        location_preference: locationPreference.value || null,
-        budget: budget.value || null,
-        special_request: specialRequest.value.trim() || null,
-        date_plan: planText.innerText || null,
-        response: response
-    };
-
-    try {
-        // No .select() here: the table is write-only for visitors
-        const { error } = await supabaseClient
-            .from("date_responses")
-            .insert([payload]);
-
-        if (error) {
-            console.error("Supabase error:", error.code, error.message, error);
-            showToast("Couldn't save: " + (error.message || "unknown error"));
-            return false;
-        }
-
-        return true;
-
-    } catch (err) {
-        console.error("Save failed:", err);
-        showToast("Network problem while saving. Please try again.");
-        return false;
-    }
+function load(key) {
+  try { return localStorage.getItem(key) || ""; } catch (e) { return ""; }
+}
+function escapeHtml(v) {
+  return String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
-
-        /* =========================================
-           YES BUTTON
-        ========================================= */
-
-        document
-            .getElementById("yesButton")
-            .addEventListener(
-                "click",
-                async function () {
-
-                    const button =
-                        this;
-
-
-                    button.disabled =
-                        true;
-
-                    button.textContent =
-                        "Saving... 💗";
-
-
-                    const saved =
-                        await saveDateResponse(
-                            "YES"
-                        );
-
-
-                    button.disabled =
-                        false;
-
-                    button.textContent =
-                        "YES 💗";
-
-
-                    if (!saved) {
-
-                        return;
-
-                    }
-
-
-                    successName.textContent =
-                        userName;
-
-
-                    document
-                        .getElementById(
-                            "successMessage"
-                        )
-                        .textContent =
-                        "It's a date, " +
-                        userName +
-                        "! 💗 I can't wait to spend some beautiful time with you.";
-
-
-                    createHeartBurst();
-
-                    createConfetti();
-
-
-                    createWhatsAppLink();
-
-
-                    showPage(
-                        successPage
-                    );
-
-                }
-            );
-
-
-        /* =========================================
-           MAYBE BUTTON
-        ========================================= */
-
-        document
-            .getElementById("maybeButton")
-            .addEventListener(
-                "click",
-                async function () {
-
-                    const button =
-                        this;
-
-
-                    button.disabled =
-                        true;
-
-                    button.textContent =
-                        "Saving...";
-
-
-                    const saved =
-                        await saveDateResponse(
-                            "MAYBE"
-                        );
-
-
-                    button.disabled =
-                        false;
-
-                    button.textContent =
-                        "MAYBE 💕";
-
-
-                    if (!saved) {
-
-                        return;
-
-                    }
-
-
-                    successName.textContent =
-                        userName;
-
-
-                    document
-                        .getElementById(
-                            "successMessage"
-                        )
-                        .textContent =
-                        "No pressure, " +
-                        userName +
-                        ". Whenever you're ready, I'll still be here. 💕";
-
-
-                    createWhatsAppLink();
-
-
-                    showPage(
-                        successPage
-                    );
-
-                }
-            );
-
-
-        /* =========================================
-           WHATSAPP
-        ========================================= */
-
-        function createWhatsAppLink() {
-
-            const message =
-                "Hi! 💗 I just responded to your date invitation." +
-                "\n\n" +
-                "Name: " +
-                userName +
-                "\n" +
-                "Activity: " +
-                (selectedActivity || "Not selected") +
-                "\n" +
-                "Food: " +
-                (selectedFood || "Not selected") +
-                "\n" +
-                "Date: " +
-                (preferredDate.value || "Not selected") +
-                "\n" +
-                "Time: " +
-                (preferredTime.value || "Not selected") +
-                "\n\n" +
-                "Can't wait! 💕";
-
-
-            const encoded =
-                encodeURIComponent(
-                    message
-                );
-
-
-            /*
-                Replace 60123456789 with
-                your WhatsApp number.
-
-                Example Malaysia:
-                60123456789
-
-                Do NOT include +
-                or spaces.
-            */
-
-            const phoneNumber =
-                "60189501257";
-
-
-            document
-                .getElementById(
-                    "whatsappBtn"
-                )
-                .href =
-                "https://wa.me/" +
-                phoneNumber +
-                "?text=" +
-                encoded;
-
-        }
-
-
-        /* =========================================
-           TOAST
-        ========================================= */
-
-        let toastTimer;
-
-
-        function showToast(
-            message
-        ) {
-
-            const toast =
-                document.getElementById(
-                    "toast"
-                );
-
-
-            toast.textContent =
-                message;
-
-
-            toast.classList.add(
-                "show"
-            );
-
-
-            clearTimeout(
-                toastTimer
-            );
-
-
-            toastTimer =
-                setTimeout(
-                    function () {
-
-                        toast.classList.remove(
-                            "show"
-                        );
-
-                    },
-                    2500
-                );
-
-        }
-
-
-        /* =========================================
-           HEART BURST
-        ========================================= */
-
-        function createHeartBurst() {
-
-            const hearts = [
-                "💗",
-                "💕",
-                "💖",
-                "💘",
-                "💝",
-                "💓"
-            ];
-
-
-            for (
-                let i = 0;
-                i < 20;
-                i++
-            ) {
-
-                const heart =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                heart.className =
-                    "floating-heart";
-
-
-                heart.textContent =
-                    hearts[
-                        Math.floor(
-                            Math.random() *
-                            hearts.length
-                        )
-                    ];
-
-
-                heart.style.left =
-                    (
-                        Math.random() *
-                        100
-                    ) +
-                    "vw";
-
-
-                heart.style.top =
-                    (
-                        45 +
-                        Math.random() *
-                        25
-                    ) +
-                    "vh";
-
-
-                heart.style.animationDuration =
-                    (
-                        1 +
-                        Math.random() *
-                        1
-                    ) +
-                    "s";
-
-
-                document.body.appendChild(
-                    heart
-                );
-
-
-                setTimeout(
-                    function () {
-
-                        heart.remove();
-
-                    },
-                    2200
-                );
-
-            }
-
-        }
-
-
-        /* =========================================
-           CONFETTI
-        ========================================= */
-
-        function createConfetti() {
-
-            const symbols = [
-                "💗",
-                "💕",
-                "✨",
-                "💖",
-                "🌸"
-            ];
-
-
-            for (
-                let i = 0;
-                i < 35;
-                i++
-            ) {
-
-                const item =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                item.className =
-                    "floating-heart";
-
-
-                item.textContent =
-                    symbols[
-                        Math.floor(
-                            Math.random() *
-                            symbols.length
-                        )
-                    ];
-
-
-                item.style.left =
-                    (
-                        Math.random() *
-                        100
-                    ) +
-                    "vw";
-
-
-                item.style.top =
-                    (
-                        Math.random() *
-                        100
-                    ) +
-                    "vh";
-
-
-                document.body.appendChild(
-                    item
-                );
-
-
-                setTimeout(
-                    function () {
-
-                        item.remove();
-
-                    },
-                    2200
-                );
-
-            }
-
-        }
-
-
-        /* =========================================
-           BACKGROUND PARTICLES
-        ========================================= */
-
-        const canvas =
-            document.getElementById(
-                "backgroundCanvas"
-            );
-
-        const ctx =
-            canvas.getContext("2d");
-
-
-        let particles = [];
-
-
-        function resizeCanvas() {
-
-            canvas.width =
-                window.innerWidth;
-
-            canvas.height =
-                window.innerHeight;
-
-        }
-
-
-        window.addEventListener(
-            "resize",
-            resizeCanvas
-        );
-
-
-        resizeCanvas();
-
-
-        for (
-            let i = 0;
-            i < 80;
-            i++
-        ) {
-
-            particles.push({
-
-                x:
-                    Math.random() *
-                    canvas.width,
-
-                y:
-                    Math.random() *
-                    canvas.height,
-
-                size:
-                    Math.random() *
-                    2 +
-                    0.5,
-
-                speed:
-                    Math.random() *
-                    0.4 +
-                    0.1,
-
-                opacity:
-                    Math.random() *
-                    0.6 +
-                    0.1
-
-            });
-
-        }
-
-
-        function animateParticles() {
-
-            ctx.clearRect(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
-
-
-            particles.forEach(
-                function (particle) {
-
-                    particle.y -=
-                        particle.speed;
-
-
-                    if (
-                        particle.y <
-                        0
-                    ) {
-
-                        particle.y =
-                            canvas.height;
-
-                    }
-
-
-                    ctx.beginPath();
-
-
-                    ctx.arc(
-                        particle.x,
-                        particle.y,
-                        particle.size,
-                        0,
-                        Math.PI * 2
-                    );
-
-
-                    ctx.fillStyle =
-                        "rgba(255,130,210," +
-                        particle.opacity +
-                        ")";
-
-
-                    ctx.fill();
-
-                }
-            );
-
-
-            requestAnimationFrame(
-                animateParticles
-            );
-
-        }
-
-
-        animateParticles();
-
-
-        /* =========================================
-           RESTORE NAME
-        ========================================= */
-
-        if (userName) {
-
-            nameInput.value =
-                userName;
-
-        }
-
-
-    </script>
-
+let toastTimer;
+function showToast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+function showPage(page) {
+  document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+  page.classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* =========================================
+   STATE
+========================================= */
+let userName = load("dateName");
+const choice = {
+  shirt: load("shirtColor"),
+  activity: load("activity"),
+  food: load("food")
+};
+const storageKeys = { shirt: "shirtColor", activity: "activity", food: "food" };
+
+/* =========================================
+   NAVIGATION
+========================================= */
+$("continueNameBtn").addEventListener("click", () => {
+  const n = $("nameInput").value.trim();
+  if (!n) { showToast("Please enter your name first 💗"); $("nameInput").focus(); return; }
+  userName = n;
+  store("dateName", n);
+  $("displayName").textContent = n;
+  showPage($("invitationPage"));
+});
+$("nameInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") $("continueNameBtn").click();
+});
+$("bigHeart").addEventListener("click", () => {
+  createHeartBurst();
+  setTimeout(() => showPage($("detailsPage")), 400);
+});
+$("openPlannerBtn").addEventListener("click", () => showPage($("plannerPage")));
+$("backBtn").addEventListener("click", () => showPage($("detailsPage")));
+$("returnBtn").addEventListener("click", () => showPage($("detailsPage")));
+
+/* =========================================
+   OPTION BUTTONS
+========================================= */
+document.querySelectorAll(".option-btn").forEach((btn) => {
+  const group = btn.dataset.group;
+  if (choice[group] && btn.dataset.value === choice[group]) btn.classList.add("selected");
+
+  btn.addEventListener("click", () => {
+    document.querySelectorAll('.option-btn[data-group="' + group + '"]')
+      .forEach((b) => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    choice[group] = btn.dataset.value;
+    store(storageKeys[group], btn.dataset.value);
+  });
+});
+
+/* =========================================
+   FORM FIELDS (saved on the device only)
+========================================= */
+const fields = {
+  preferredDate: $("preferredDate"),
+  preferredTime: $("preferredTime"),
+  locationPreference: $("locationPreference"),
+  budget: $("budget"),
+  specialRequest: $("specialRequest")
+};
+Object.keys(fields).forEach((key) => {
+  const saved = load(key);
+  if (saved) fields[key].value = saved;
+  fields[key].addEventListener("input", () => store(key, fields[key].value));
+});
+
+/* =========================================
+   GENERATE PLAN
+========================================= */
+$("generatePlanBtn").addEventListener("click", () => {
+  if (!choice.activity) { showToast("Choose an activity first 💕"); return; }
+  if (!choice.food) { showToast("Choose what you want to eat 🍱"); return; }
+
+  const rows = [
+    ["👤 For:", userName],
+    ["📅 Date:", fields.preferredDate.value || "We'll decide the date together"],
+    ["⏰ Time:", fields.preferredTime.value || "We'll decide the time together"],
+    ["👕 Outfit:", choice.shirt || "Something cute"],
+    ["🎯 Activity:", choice.activity],
+    ["🍱 Food:", choice.food],
+    ["📍 Location:", fields.locationPreference.value || "A surprise location"],
+    ["💰 Budget:", fields.budget.value || "Whatever feels comfortable"],
+    ["💬 Special request:", fields.specialRequest.value.trim() || "Nothing extra — just spending time together 💗"]
+  ];
+
+  $("planText").innerHTML = rows.map((r) =>
+    "<div class='plan-line'><strong>" + r[0] + "</strong> " + escapeHtml(r[1]) + "</div>"
+  ).join("");
+
+  $("generatedPlan").classList.add("show");
+  $("responseArea").style.display = "block";
+  $("generatedPlan").scrollIntoView({ behavior: "smooth", block: "center" });
+  showToast("Your date plan is ready! ✨");
+});
+
+/* =========================================
+   SAVE TO SUPABASE
+   Uses a plain fetch() to the REST API, so it
+   doesn't depend on any external library.
+   Insert-only: no .select() / no return data.
+========================================= */
+function showError(text) {
+  const box = $("errorBox");
+  box.style.display = "block";
+  box.textContent = text;
+}
+function clearError() {
+  const box = $("errorBox");
+  box.style.display = "none";
+  box.textContent = "";
+}
+
+async function saveDateResponse(response) {
+  clearError();
+
+  const payload = {
+    name: userName,
+    shirt_color: choice.shirt || null,
+    activity: choice.activity || null,
+    food: choice.food || null,
+    preferred_date: fields.preferredDate.value || null,
+    preferred_time: fields.preferredTime.value || null,
+    location_preference: fields.locationPreference.value || null,
+    budget: fields.budget.value || null,
+    special_request: fields.specialRequest.value.trim() || null,
+    date_plan: $("planText").innerText || null,
+    response: response
+  };
+
+  try {
+    const res = await fetch(SUPABASE_URL + "/rest/v1/" + TABLE, {
+      method: "POST",
+      headers: {
+        "apikey": SUPABASE_PUBLISHABLE_KEY,
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const body = await res.text();
+      console.error("Save failed:", res.status, body);
+      showError("Couldn't save (status " + res.status + "): " + body);
+      return false;
+    }
+    return true;
+
+  } catch (err) {
+    console.error("Network error:", err);
+    showError(
+      "Network error: " + err.message +
+      ". Check your internet, that the Supabase project isn't paused, " +
+      "and that the page isn't opened in a restricted preview."
+    );
+    return false;
+  }
+}
+
+async function respond(kind, button, idleText, busyText) {
+  button.disabled = true;
+  button.textContent = busyText;
+  const saved = await saveDateResponse(kind);
+  button.disabled = false;
+  button.textContent = idleText;
+  if (!saved) return;
+
+  $("successName").textContent = userName;
+  $("successMessage").textContent = kind === "YES"
+    ? "It's a date, " + userName + "! 💗 I can't wait to spend some beautiful time with you."
+    : "No pressure, " + userName + ". Whenever you're ready, I'll still be here. 💕";
+
+  if (kind === "YES") { createHeartBurst(); createConfetti(); }
+  createWhatsAppLink();
+  showPage($("successPage"));
+}
+
+$("yesButton").addEventListener("click", function () {
+  respond("YES", this, "YES 💗", "Saving... 💗");
+});
+$("maybeButton").addEventListener("click", function () {
+  respond("MAYBE", this, "MAYBE 💕", "Saving...");
+});
+
+/* =========================================
+   WHATSAPP
+========================================= */
+function createWhatsAppLink() {
+  const msg =
+    "Hi! 💗 I just responded to your date invitation.\n\n" +
+    "Name: " + userName + "\n" +
+    "Activity: " + (choice.activity || "Not selected") + "\n" +
+    "Food: " + (choice.food || "Not selected") + "\n" +
+    "Date: " + (fields.preferredDate.value || "Not selected") + "\n" +
+    "Time: " + (fields.preferredTime.value || "Not selected") + "\n\n" +
+    "Can't wait! 💕";
+  $("whatsappBtn").href = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg);
+}
+
+/* =========================================
+   HEARTS & CONFETTI
+========================================= */
+function spawn(symbols, count, topFn, durFn) {
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement("div");
+    el.className = "floating-heart";
+    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    el.style.left = Math.random() * 100 + "vw";
+    el.style.top = topFn() + "vh";
+    if (durFn) el.style.animationDuration = durFn() + "s";
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 2200);
+  }
+}
+function createHeartBurst() {
+  spawn(["💗", "💕", "💖", "💘", "💝", "💓"], 20,
+    () => 45 + Math.random() * 25, () => 1 + Math.random());
+}
+function createConfetti() {
+  spawn(["💗", "💕", "✨", "💖", "🌸"], 35, () => Math.random() * 100);
+}
+
+/* =========================================
+   BACKGROUND PARTICLES
+========================================= */
+const canvas = $("bg");
+const ctx = canvas.getContext("2d");
+const particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+for (let i = 0; i < 80; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 2 + 0.5,
+    speed: Math.random() * 0.4 + 0.1,
+    opacity: Math.random() * 0.6 + 0.1
+  });
+}
+(function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach((p) => {
+    p.y -= p.speed;
+    if (p.y < 0) p.y = canvas.height;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(255,130,210," + p.opacity + ")";
+    ctx.fill();
+  });
+  requestAnimationFrame(animate);
+})();
+
+/* =========================================
+   RESTORE NAME
+========================================= */
+if (userName) {
+  $("nameInput").value = userName;
+  $("displayName").textContent = userName;
+}
+</script>
 </body>
 </html>
