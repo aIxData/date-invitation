@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
     <meta charset="UTF-8">
 
     <meta
@@ -1660,13 +1661,21 @@
         const SUPABASE_PUBLISHABLE_KEY =
             'sb_publishable_7O1t9FHZ-lCQ1YoL684Ptw_ulcPEtvL';
 
-        let supabaseClient = null;
+       let supabaseClient = null;
 
-        // Create the client when the URL and publishable key are present.
-        if (SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY) {
-            supabaseClient = window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_PUBLISHABLE_KEY
+try {
+    if (window.supabase && SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY) {
+        supabaseClient = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY,
+            { auth: { persistSession: false } }
+        );
+    } else {
+        console.error("Supabase library failed to load or keys are missing.");
+    }
+} catch (e) {
+    console.error("Supabase init error:", e);
+}
             );
         }
 
@@ -2334,121 +2343,47 @@
            SAVE TO SUPABASE
         ========================================= */
 
-        async function saveDateResponse(
-            response
-        ) {
+        async function saveDateResponse(response) {
 
-            if (!supabaseClient) {
+    if (!supabaseClient) {
+        showToast("Can't connect to the database. Please refresh.");
+        return false;
+    }
 
-                showToast(
-                    "Supabase is not connected yet."
-                );
+    const payload = {
+        name: userName,
+        shirt_color: selectedShirt || null,
+        activity: selectedActivity || null,
+        food: selectedFood || null,
+        preferred_date: preferredDate.value || null,
+        preferred_time: preferredTime.value || null,
+        location_preference: locationPreference.value || null,
+        budget: budget.value || null,
+        special_request: specialRequest.value.trim() || null,
+        date_plan: planText.innerText || null,
+        response: response
+    };
 
-                console.error(
-                    "Supabase URL/key not configured."
-                );
+    try {
+        // No .select() here: the table is write-only for visitors
+        const { error } = await supabaseClient
+            .from("date_responses")
+            .insert([payload]);
 
-                return false;
-
-            }
-
-
-            const datePlan =
-                planText.innerText;
-
-
-            const payload = {
-
-                name:
-                    userName,
-
-                shirt_color:
-                    selectedShirt || null,
-
-                activity:
-                    selectedActivity || null,
-
-                food:
-                    selectedFood || null,
-
-                preferred_date:
-                    preferredDate.value || null,
-
-                preferred_time:
-                    preferredTime.value || null,
-
-                location_preference:
-                    locationPreference.value || null,
-
-                budget:
-                    budget.value || null,
-
-                special_request:
-                    specialRequest.value.trim() ||
-                    null,
-
-                date_plan:
-                    datePlan || null,
-
-                response:
-                    response
-
-            };
-
-
-            try {
-
-                const {
-                    data,
-                    error
-                } = await supabaseClient
-                    .from(
-                        "date_responses"
-                    )
-                    .insert([payload])
-                    .select();
-
-
-                if (error) {
-
-                    console.error(
-                        "Supabase error:",
-                        error
-                    );
-
-                    showToast(
-                        "Couldn't save the response. Please try again."
-                    );
-
-                    return false;
-
-                }
-
-
-                console.log(
-                    "Saved to Supabase:",
-                    data
-                );
-
-
-                return true;
-
-            }
-            catch (error) {
-
-                console.error(
-                    error
-                );
-
-                showToast(
-                    "Something went wrong while saving."
-                );
-
-                return false;
-
-            }
-
+        if (error) {
+            console.error("Supabase error:", error.code, error.message, error);
+            showToast("Couldn't save: " + (error.message || "unknown error"));
+            return false;
         }
+
+        return true;
+
+    } catch (err) {
+        console.error("Save failed:", err);
+        showToast("Network problem while saving. Please try again.");
+        return false;
+    }
+}
 
 
         /* =========================================
